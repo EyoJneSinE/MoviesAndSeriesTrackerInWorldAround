@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/moviesFragment"
+        android:title="Movies"
+        android:icon="@drawable/ic_movies" />
+
+    <item android:id="@+id/trendingFragment"
+        android:title="Trending"
+        android:icon="@drawable/ic_trends"/>
+
+    <item android:id="@+id/seriesFragment"
+        android:title="Series"
+        android:icon="@drawable/ic_series" />
+
+</menu>
