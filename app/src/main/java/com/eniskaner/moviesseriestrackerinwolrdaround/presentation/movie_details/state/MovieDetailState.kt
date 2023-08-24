@@ -9,9 +9,9 @@ import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_vide
 data class MovieDetailState(
     val isLoading : Boolean = false,
     val movie : GetMovieDetailsFromId? = null,
-    val cast : CastingForMovieFromTMDB? = null,
-    val crew : List<MovieCrew> = emptyList(),
-    val genre : GenresFromTMDB? = null,
-    val trailer : List<MoviesTrailerResult> = emptyList(),
+    val movieCast : CastingForMovieFromTMDB? = null,
+    val movieCrew : List<MovieCrew> = emptyList(),
+    val movieGenre : GenresFromTMDB? = null,
+    val movieTrailer : List<MoviesTrailerResult> = emptyList(),
     val error : String = ""
 )
