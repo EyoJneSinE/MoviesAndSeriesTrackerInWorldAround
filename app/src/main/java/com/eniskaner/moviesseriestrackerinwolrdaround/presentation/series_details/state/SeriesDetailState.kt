@@ -8,10 +8,10 @@ import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_vid
 
 data class SeriesDetailState(
     val isLoading : Boolean = false,
-    val series : SeriesDetails? = null,
-    val cast : CastingForSeriesFromTMDB? = null,
-    val crew : List<Crew> = emptyList(),
-    val genre : SeriesGenreFromTMDB? = null,
-    val trailer : List<SeriesTrailerResut> = emptyList(),
+    val seriesDetails : SeriesDetails? = null,
+    val seriesCast : CastingForSeriesFromTMDB? = null,
+    val seriesCrew : List<Crew> = emptyList(),
+    val seriesGenre : SeriesGenreFromTMDB? = null,
+    val seriesTrailer : List<SeriesTrailerResut> = emptyList(),
     val error : String = ""
 )

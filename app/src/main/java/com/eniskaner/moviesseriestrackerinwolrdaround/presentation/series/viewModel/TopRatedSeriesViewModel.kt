@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.series_usecase.GetTopRatedSeriesUseCase
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.state.SeriesState
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class TopRatedSeriesViewModel @Inject constructor(
     private val getTopRatedSeriesUseCase: GetTopRatedSeriesUseCase
 ): ViewModel() {
@@ -30,7 +32,7 @@ class TopRatedSeriesViewModel @Inject constructor(
         jobTopRatedSeries = getTopRatedSeriesUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateTopRatedSeries.value = SeriesState(series = it.data)
+                    _stateTopRatedSeries.value = SeriesState(topRatedSeries = it.data)
                 }
 
                 is Resource.Error -> {

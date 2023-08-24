@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase.GetNowPlayingMoviesUseCase
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.state.MoviesState
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class NowPlayingMoviesViewModel @Inject constructor(
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
 ): ViewModel() {
@@ -30,7 +32,7 @@ class NowPlayingMoviesViewModel @Inject constructor(
         jobNowPlayingMovies = getNowPlayingMoviesUseCase.executeGetNowPlayingMoviesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateNowPlayingMovies.value = MoviesState(movies = it.data?.movies ?: emptyList())
+                    _stateNowPlayingMovies.value = MoviesState(moviesNowPlaying = it.data?.movies ?: emptyList())
                 }
 
                 is Resource.Error -> {

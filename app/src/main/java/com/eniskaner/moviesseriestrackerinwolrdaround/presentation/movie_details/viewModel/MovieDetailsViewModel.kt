@@ -28,16 +28,16 @@ class MovieDetailsViewModel @Inject constructor(
 
     init {
         savedMovieDetailsStateHandle.get<String>(MOVIE_ID.toString())?.let {
-            getMovieDetailFromTMDB(it.toInt())
+            getMovieDetails(it.toInt())
         }
     }
 
-    private fun getMovieDetailFromTMDB(imdbId: Int) {
+    private fun getMovieDetails(imdbId: Int) {
         jobMovieDetails?.cancel()
         jobMovieDetails = getMovieDetailsUseCase.executeGetMovieDetailsFromTMDB(imdbId).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateMovieDetails.value = MovieDetailState(movie = it.data)
+                    _stateMovieDetails.value = MovieDetailState(movieDetails = it.data)
                 }
                 is Resource.Error -> {
                     _stateMovieDetails.value = MovieDetailState(error = it.message ?: "Error!")

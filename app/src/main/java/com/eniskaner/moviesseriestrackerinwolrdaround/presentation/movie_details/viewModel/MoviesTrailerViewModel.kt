@@ -23,17 +23,17 @@ class MoviesTrailerViewModel @Inject constructor(
     private val _stateMovieTrailer = MutableStateFlow<MovieDetailState>(MovieDetailState())
     val stateMovieTrailer : StateFlow<MovieDetailState> = _stateMovieTrailer
 
-    private var jobTrailers : Job? = null
+    private var jobMovieTrailers : Job? = null
 
     init {
         savedMovieTrailerStateHandle.get<String>(MOVIE_ID.toString())?.let {
-            getMovieTrailerFromTMDB(it.toInt())
+            getMovieTrailer(it.toInt())
         }
     }
 
-    private fun getMovieTrailerFromTMDB(imdbId: Int) {
-        jobTrailers?.cancel()
-        jobTrailers = getMovieTrailerUseCase.executeGetVideosFromTMDB(imdbId).onEach {
+    private fun getMovieTrailer(imdbId: Int) {
+        jobMovieTrailers?.cancel()
+        jobMovieTrailers = getMovieTrailerUseCase.executeGetVideosFromTMDB(imdbId).onEach {
             when (it) {
                 is Resource.Success -> {
                     _stateMovieTrailer.value = MovieDetailState(movieTrailer = it.data?.results ?: emptyList())

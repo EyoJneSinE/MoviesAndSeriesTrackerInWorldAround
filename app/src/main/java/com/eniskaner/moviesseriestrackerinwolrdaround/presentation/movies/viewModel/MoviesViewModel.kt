@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase.GetMoviesUseCase
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.state.MoviesState
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase
 ): ViewModel() {

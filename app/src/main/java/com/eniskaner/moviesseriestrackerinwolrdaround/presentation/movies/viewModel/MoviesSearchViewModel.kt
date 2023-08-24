@@ -6,6 +6,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase.GetS
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.event.MoviesEvent
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.state.MoviesState
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class MoviesSearchViewModel @Inject constructor(
     private val getSearchMoviesUseCase: GetSearchMoviesUseCase
 ): ViewModel() {
@@ -31,7 +33,7 @@ class MoviesSearchViewModel @Inject constructor(
         jobSearchMovies = getSearchMoviesUseCase.executeSearchMovieFromTMDB(search).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateSearchMovies.value = MoviesState(movies = it.data?.movies ?: emptyList())
+                    _stateSearchMovies.value = MoviesState(moviesSearching = it.data?.movies ?: emptyList())
                 }
 
                 is Resource.Error -> {

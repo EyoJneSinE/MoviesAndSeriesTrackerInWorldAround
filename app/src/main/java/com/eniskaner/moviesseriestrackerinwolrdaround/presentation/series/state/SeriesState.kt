@@ -6,6 +6,8 @@ import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_
 data class SeriesState (
     val isLoading : Boolean = false,
     val series : TopRatedTvFromTMDB? = null,
+    val searchingSeries : TopRatedTvFromTMDB? = null,
+    val topRatedSeries : TopRatedTvFromTMDB? = null,
     val seriesGenre: List<SeriesGenre> = emptyList(),
     val error : String = "",
     val search : String = "the"

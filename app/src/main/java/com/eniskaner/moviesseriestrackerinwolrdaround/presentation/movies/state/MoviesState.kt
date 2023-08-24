@@ -6,6 +6,8 @@ import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_genr
 data class MoviesState(
     val isLoading : Boolean = false,
     val movies : List<MoviesResult> = emptyList(),
+    val moviesSearching : List<MoviesResult> = emptyList(),
+    val moviesNowPlaying : List<MoviesResult> = emptyList(),
     val moviesGenre: List<MoviesGenre> = emptyList(),
     val error : String = "",
     val search : String = "marvel"

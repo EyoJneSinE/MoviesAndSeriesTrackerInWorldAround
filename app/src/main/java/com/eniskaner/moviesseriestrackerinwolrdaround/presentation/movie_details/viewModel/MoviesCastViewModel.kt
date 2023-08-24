@@ -7,6 +7,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase.GetM
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.state.MovieDetailState
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Constants.MOVIE_ID
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class MoviesCastViewModel @Inject constructor(
     private val getMovieDetailsCastUseCase: GetMovieDetailsCastAndCrewUseCase,
     private val savedMovieCastStateHandle: SavedStateHandle
@@ -22,17 +24,17 @@ class MoviesCastViewModel @Inject constructor(
     private val _stateMovieCast = MutableStateFlow<MovieDetailState>(MovieDetailState())
     val stateMovieCast : StateFlow<MovieDetailState> = _stateMovieCast
 
-    private var jobCasts : Job? = null
+    private var jobMovieCasts : Job? = null
 
     init {
         savedMovieCastStateHandle.get<String>(MOVIE_ID.toString())?.let {
-            getMovieCastFromTMDB(it.toInt())
+            getMovieCast(it.toInt())
         }
     }
 
-    private fun getMovieCastFromTMDB(imdbId: Int) {
-        jobCasts?.cancel()
-        jobCasts = getMovieDetailsCastUseCase.executeGetCastAndCrewFromTMDB(imdbId).onEach {
+    private fun getMovieCast(imdbId: Int) {
+        jobMovieCasts?.cancel()
+        jobMovieCasts = getMovieDetailsCastUseCase.executeGetCastAndCrewFromTMDB(imdbId).onEach {
             when (it) {
                 is Resource.Success -> {
                     _stateMovieCast.value = MovieDetailState(movieCast = it.data)
