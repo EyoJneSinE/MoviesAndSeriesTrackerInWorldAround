@@ -13,40 +13,40 @@ import retrofit2.http.Query
 interface SeriesAPI {
     @GET("/3/trending/tv/day")
     suspend fun getSeriesFromTMDB(
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): TopRatedTvFromTMDB
 
     @GET("/3/tv/{seriesId}")
     suspend fun getSeriesDetailsFromTMDB(
         @Path("seriesId") seriesId: Int,
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): SeriesDetails
 
     @GET("/3/tv/top_rated")
     suspend fun getTopRatedTv(
-        @Query("api_key") apikey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apikey: String= Constants.THE_MOVIEDB_KEY
     ): TopRatedTvFromTMDB
 
     @GET("/3/search/tv")
     suspend fun searchSeriesFromTMDB(
         @Query("query") query: String?,
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): TopRatedTvFromTMDB
 
     @GET("/3/genre/tv/list")
     suspend fun genreSerieFromTMDB(
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): SeriesGenreFromTMDB
 
     @GET("/3/tv/{seriesId}/videos")
     suspend fun getTvVideosFromTMDB(
         @Path("seriesId") seriesId: Int,
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): GetSeriesTrailerFromTMDB
 
     @GET("/3/tv/{seriesId}/credits")
     suspend fun getTvCastFromTMDB(
         @Path("seriesId") seriesId: Int,
-        @Query("api_key") apiKey: String= Constants.MOVIEDB_KEY
+        @Query("api_key") apiKey: String= Constants.THE_MOVIEDB_KEY
     ): CastingForSeriesFromTMDB
 }
