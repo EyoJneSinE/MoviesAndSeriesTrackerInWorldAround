@@ -5,7 +5,7 @@ import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_
 
 data class TrendingState(
     val isLoading: Boolean = false,
-    val movies: List<MoviesResult> = emptyList(),
-    val series: List<SeriesResult> = emptyList(),
+    val trendingMovies: List<MoviesResult> = emptyList(),
+    val trendingSeries: List<SeriesResult> = emptyList(),
     val error: String = "",
 )
