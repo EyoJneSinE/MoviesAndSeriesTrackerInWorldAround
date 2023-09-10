@@ -1,5 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.series_usecase.GetTopRatedSeriesUseCase
@@ -32,13 +33,20 @@ class TrendingSeriesPartViewModel @Inject constructor(
         jobTrendingSeries = getTopRatedSeriesForTrendingUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _trendingSeriesState.value = TrendingState(trendingSeries = it.data?.series ?: emptyList())
+                    val seriesData = it.data?.series ?: emptyList()
+                    _trendingSeriesState.value = TrendingState(trendingSeries = seriesData)
+                    Log.d("TrendingSeriesPartViewModel", "Trending series data received successfully. Data size: ${seriesData.size}")
+                    seriesData.forEachIndexed { index, series ->
+                        Log.d("TrendingSeriesPartViewModel", "Series $index: ${series.name}")
+                    }
                 }
                 is Resource.Error -> {
                     _trendingSeriesState.value = TrendingState(error = it.message ?: "Error!")
+                    Log.d("TrendingSeriesPartViewModel", "Trending series data received unsuccessful.")
                 }
                 is Resource.Loading -> {
                     _trendingSeriesState.value = TrendingState(isLoading = true)
+                    Log.d("TrendingSeriesPartViewModel", "Trending series still Loading.")
                 }
             }
         }.launchIn(viewModelScope)

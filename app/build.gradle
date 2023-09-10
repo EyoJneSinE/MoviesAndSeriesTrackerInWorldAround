@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
+    id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
 }
@@ -47,12 +47,6 @@ android {
         useBuildCache = false
         correctErrorTypes = false
         generateStubs = true
-        javacOptions {
-            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
-        }
-    }
-    hilt {
-        enableAggregatingTask = true
     }
 }
 
@@ -101,17 +95,17 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     //Dagger - Hilt
-    implementation "com.google.dagger:hilt-android:2.47"
+    implementation "com.google.dagger:hilt-android:2.45"
     implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt "com.google.dagger:hilt-android-compiler:2.47"
+    kapt "com.google.dagger:hilt-android-compiler:2.45"
     api 'com.google.dagger:dagger-android:2.45'
     api 'com.google.dagger:dagger-android-support:2.45'
     kapt 'com.google.dagger:dagger-android-processor:2.45'
     androidTestImplementation "com.google.dagger:hilt-android-testing:2.45"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.45'
-    androidTestAnnotationProcessor 'com.google.dagger:hilt-compiler:2.47'
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.47"
+    androidTestAnnotationProcessor 'com.google.dagger:hilt-compiler:2.45'
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.45"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     androidTestImplementation "androidx.work:work-testing:$work_version"
     implementation 'com.onesignal:OneSignal:4.6.3'

@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         // other plugins...
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.47'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.45'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"

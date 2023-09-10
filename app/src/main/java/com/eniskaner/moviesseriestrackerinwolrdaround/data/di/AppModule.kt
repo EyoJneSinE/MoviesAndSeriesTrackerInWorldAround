@@ -1,5 +1,7 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.data.di
 
+import android.content.Context
+import com.eniskaner.moviesseriestrackerinwolrdaround.MASApplication
 import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.MovieAPI
 import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.SeriesAPI
 import com.eniskaner.moviesseriestrackerinwolrdaround.data.repo.MovieRepositoryImpl
@@ -7,15 +9,21 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.data.repo.SeriesRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.SeriesRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Constants.THE_MOVIEDB_URL
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun provideMovieApi() : MovieAPI {
         return Retrofit.Builder()
             .baseUrl(THE_MOVIEDB_URL)
@@ -24,14 +32,14 @@ object AppModule {
             .create(MovieAPI::class.java)
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideMovieRepository(movieAPI: MovieAPI) : MovieRepository {
         return MovieRepositoryImpl(movieApi = movieAPI)
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideSeriesApi() : SeriesAPI {
         return Retrofit.Builder()
             .baseUrl(THE_MOVIEDB_URL)
@@ -40,8 +48,8 @@ object AppModule {
             .create(SeriesAPI::class.java)
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideSeriesRepository(seriesAPI: SeriesAPI) : SeriesRepository {
         return SeriesRepositoryImpl(seriesAPI = seriesAPI)
     }
