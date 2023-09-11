@@ -1,6 +1,7 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model
 
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIE
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIES_AND_SERIES
@@ -35,10 +36,10 @@ sealed class TrendingDataModel: DisplayItem {
         }
     }
     data class TrendingHorizontal(
-        val trendingHorizontal: TrendingHorizontalViewPager?
+        val trendingHorizontal: List<TrendingHorizontalViewPager>
     ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
-            return TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
+            return TYPE_TRENDING_HORIZONTAL
         }
     }
 

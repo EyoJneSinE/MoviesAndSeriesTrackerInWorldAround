@@ -19,11 +19,16 @@ class HorizontalViewPagerViewHolder(
 ) : RecyclerView.ViewHolder(horizontalViewPagerBinding.root)  {
 
 
-    fun bindTrendingHorizontalViewPager(horizontalViewPagerItem: TrendingDataModel.TrendingHorizontalViewPager){
+    fun bindTrendingHorizontalViewPager(horizontalViewPagerItem: TrendingDataModel.TrendingHorizontal){
+        val horizontalItems = horizontalViewPagerItem.trendingHorizontal
 
-        horizontalViewPagerBinding.carouselImageTitle.text = horizontalViewPagerItem.horizontalViewPagerTitle
-        val horizontalViewPagerPoster = BACKDROP_URL + horizontalViewPagerItem.horizontalViewPagerPoster
-        horizontalViewPagerBinding.carouselImageView.load(horizontalViewPagerPoster)
+        for (i in horizontalItems.indices) {
+            horizontalViewPagerBinding.carouselImageTitle.text = horizontalItems[i].horizontalViewPagerTitle
+            val horizontalViewPagerPoster = BACKDROP_URL + horizontalItems[i].horizontalViewPagerPoster
+            horizontalViewPagerBinding.carouselImageView.load(horizontalViewPagerPoster)
+        }
+
+
     }
 
 }

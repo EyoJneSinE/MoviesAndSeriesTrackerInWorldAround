@@ -12,9 +12,8 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewHol
 import java.lang.IllegalArgumentException
 
 class HorizontalViewPagerAdapter(
-    private val recyclerItemList: TrendingDataModel.TrendingHorizontalViewPager,
+    private val recyclerItemList: TrendingDataModel.TrendingHorizontal,
 ) : RecyclerView.Adapter<HorizontalViewPagerViewHolder>() {
-    var horizontalList = mutableListOf<TrendingDataModel.TrendingHorizontalViewPager>(recyclerItemList)
 
 
 
@@ -35,10 +34,10 @@ class HorizontalViewPagerAdapter(
     }
 
 
-    override fun getItemCount(): Int = horizontalList.size
+    override fun getItemCount(): Int = recyclerItemList.trendingHorizontal.size
 
     override fun onBindViewHolder(holder: HorizontalViewPagerViewHolder, position: Int) {
-        holder.bindTrendingHorizontalViewPager(horizontalList[position])
+        holder.bindTrendingHorizontalViewPager(recyclerItemList)
     }
 
 }

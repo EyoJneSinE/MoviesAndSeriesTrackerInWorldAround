@@ -93,17 +93,30 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
                             ))
                         )
                     }*/
-                trendingDataList.addAll(trendingHorizontalViewPagerData)
+                //trendingDataList.addAll(trendingHorizontalViewPagerData)
                 /*trendingDataList.addAll(trendingHorizontalViewPagerData)*/
                 /*trendingDataAdapter.addHorizontalItems(trendingHorizontalPagerDataList)*/
 
-                /*val trendingHorizontalData = moviesState.trendingMovies.map { horizontalResult ->
+                val trendingHorizontalData = moviesState.trendingMovies.map { horizontalResult ->
                     trendingHorizontalResult(horizontalResult)
                 }
 
                 val totalHorizontalItems = trendingHorizontalData.size
 
                 if (trendingHorizontalData.isNotEmpty()) {
+                    for (i in 0 until totalHorizontalItems) {
+                        if (i < trendingHorizontalData.size) {
+                            val trendingViewPager = TrendingDataModel.TrendingHorizontalViewPager(
+                                horizontalViewPagerTitle = trendingHorizontalData[i].horizontalViewPagerTitle,
+                                horizontalViewPagerPoster = trendingHorizontalData[i].horizontalViewPagerPoster
+                            )
+                            trendingDataList.add(TrendingDataModel.TrendingHorizontal(listOf(trendingViewPager)))
+                        }
+                    }
+                }
+
+
+                /*if (trendingHorizontalData.isNotEmpty()) {
                     for (i in 0 until totalHorizontalItems) {
                         if (i < trendingHorizontalData.size) {
                             trendingDataList.add(TrendingDataModel.TrendingHorizontal(
@@ -191,7 +204,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
     fun trendingHorizontalResult(trendingResult: MoviesResult): TrendingDataModel.TrendingHorizontalViewPager{
         return TrendingDataModel.TrendingHorizontalViewPager(
             horizontalViewPagerTitle = trendingResult.title ?: "",
-            horizontalViewPagerPoster = trendingResult.posterPath ?: ""
+            horizontalViewPagerPoster = trendingResult.backdropPath ?: ""
         )
     }
 }

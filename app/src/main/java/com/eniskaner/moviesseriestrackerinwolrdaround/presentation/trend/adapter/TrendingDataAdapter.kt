@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarauselImageBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarouselRecyclerViewBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.TrendingMoviesAndSeriesElementsRowBinding
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIE
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIES_AND_SERIES
@@ -26,7 +27,7 @@ class TrendingDataAdapter  :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_TRENDING_HORIZONTAL_VIEW_PAGER -> {
+            TYPE_TRENDING_HORIZONTAL -> {
                 val horizontalViewPagerBinding =
                     CarauselImageBinding.inflate(layoutInflater, parent, false)
                 HorizontalViewPagerViewHolder(horizontalViewPagerBinding)
@@ -58,11 +59,12 @@ class TrendingDataAdapter  :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (item.type()) {
-            TYPE_TRENDING_HORIZONTAL_VIEW_PAGER -> {
+            TYPE_TRENDING_HORIZONTAL -> {
                 val trendingHorizontalViewPagerViewHolder = holder as HorizontalViewPagerViewHolder
-                horizontalViewPagerAdapter = HorizontalViewPagerAdapter(item as TrendingDataModel.TrendingHorizontalViewPager)
-                horizontalViewPagerAdapter.getItemViewType(position)
-                trendingHorizontalViewPagerViewHolder.bindTrendingHorizontalViewPager(item as TrendingDataModel.TrendingHorizontalViewPager)
+                horizontalViewPagerAdapter = HorizontalViewPagerAdapter(item as TrendingDataModel.TrendingHorizontal)
+                trendingHorizontalViewPagerViewHolder.bindingAdapter
+                horizontalViewPagerAdapter.bindViewHolder(trendingHorizontalViewPagerViewHolder, position)
+                //trendingHorizontalViewPagerViewHolder.bindTrendingHorizontalViewPager(item as TrendingDataModel.TrendingHorizontal)
                 /*horizontalViewPagerAdapter.onBindViewHolder(trendingHorizontalViewPagerViewHolder, position)*/
 
             }
@@ -87,7 +89,7 @@ class TrendingDataAdapter  :
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return when (item) {
-            /*is TrendingDataModel.TrendingHorizontal -> TYPE_TRENDING_HORIZONTAL*/
+            is TrendingDataModel.TrendingHorizontal -> TYPE_TRENDING_HORIZONTAL
             is TrendingDataModel.TrendingHorizontalViewPager -> TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
             is TrendingDataModel.TrendingMoviesAndSeries -> TYPE_TRENDING_MOVIES_AND_SERIES
             is TrendingDataModel.TrendingMovies -> TYPE_TRENDING_MOVIE
