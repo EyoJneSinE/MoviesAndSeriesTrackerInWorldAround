@@ -20,6 +20,7 @@ class HorizontalViewPagerViewHolder(
 
 
     fun bindTrendingHorizontalViewPager(horizontalViewPagerItem: TrendingDataModel.TrendingHorizontal){
+
         val horizontalItems = horizontalViewPagerItem.trendingHorizontal
 
         for (i in horizontalItems.indices) {
@@ -28,10 +29,20 @@ class HorizontalViewPagerViewHolder(
             horizontalViewPagerBinding.carouselImageView.load(horizontalViewPagerPoster)
         }
 
-
     }
 
 }
+/*horizontalViewPagerBinding.carouselImageTitle.text = horizontalViewPagerItem.horizontalViewPagerTitle
+        val horizontalViewPagerPoster = BACKDROP_URL + horizontalViewPagerItem.horizontalViewPagerPoster
+        horizontalViewPagerBinding.carouselImageView.load(horizontalViewPagerPoster)*/
+
+/*val horizontalItems = horizontalViewPagerItem.trendingHorizontal
+
+for (i in horizontalItems.indices) {
+    horizontalViewPagerBinding.carouselImageTitle.text = horizontalItems[i].horizontalViewPagerTitle
+    val horizontalViewPagerPoster = BACKDROP_URL + horizontalItems[i].horizontalViewPagerPoster
+    horizontalViewPagerBinding.carouselImageView.load(horizontalViewPagerPoster)
+}*/
 
 /*horizontalViewPagerBinding.carouselImageTitle.text = horizontalViewPagerItem.trendingHorizontal.map { it.horizontalViewPagerTitle }.firstOrNull()
 val horizontalViewPagerPoster = BACKDROP_URL + horizontalViewPagerItem.trendingHorizontal.map { it.horizontalViewPagerPoster }.firstOrNull()

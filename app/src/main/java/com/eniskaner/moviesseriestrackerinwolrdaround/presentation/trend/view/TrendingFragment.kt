@@ -4,29 +4,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.MoviesResult
 import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_series.SeriesResult
-import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentTrendingBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.HorizontalViewPagerAdapter
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.TrendingDataAdapter
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewModel.TrendingMoviesPartViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewModel.TrendingSeriesPartViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
@@ -37,7 +31,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
         TrendingDataAdapter()
     }
     /*private val trendingHorizontalViewPagerAdapter: HorizontalViewPagerAdapter by lazy {
-        HorizontalViewPagerAdapter()
+        HorizontalViewPagerAdapter(item as com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel)
     }*/
 
     override fun setBinding(): FragmentTrendingBinding =
@@ -111,6 +105,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
                                 horizontalViewPagerPoster = trendingHorizontalData[i].horizontalViewPagerPoster
                             )
                             trendingDataList.add(TrendingDataModel.TrendingHorizontal(listOf(trendingViewPager)))
+                            /*trendingHorizontalViewPagerAdapter.submitList(listOf(trendingViewPager))*/
                         }
                     }
                 }
@@ -169,15 +164,21 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
             }.collect { trendingData ->
 
 
-                /*if (trendingData.contains(DisplayItem.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER as? TrendingDataModel.TrendingHorizontalViewPager)  ) {
+
+                /*if (trendingData.contains(DisplayItem.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER as TrendingDataModel.TrendingHorizontalViewPager)  ) {
                     layoutManager.orientation = LinearLayoutManager.HORIZONTAL
                     binding.trendingRecyclerView.apply {
-                        adapter = trendingHorizontalViewPagerAdapter
+                        adapter = trendingDataAdapter
                         hasFixedSize()
 
                     }
                 } else {
                     layoutManager.orientation = LinearLayoutManager.VERTICAL
+                }*/
+                /*if (trendingData.contains(TrendingDataModel.TrendingHorizontal)) {
+                    layoutManager.orientation = RecyclerView.HORIZONTAL
+                } else {
+                    layoutManager.orientation = RecyclerView.VERTICAL
                 }*/
 
                 trendingDataAdapter.submitList(trendingData)

@@ -2,12 +2,9 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapte
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarauselImageBinding
-import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarouselRecyclerViewBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.TrendingMoviesAndSeriesElementsRowBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL_VIEW_PAGER
@@ -31,7 +28,6 @@ class TrendingDataAdapter  :
                 val horizontalViewPagerBinding =
                     CarauselImageBinding.inflate(layoutInflater, parent, false)
                 HorizontalViewPagerViewHolder(horizontalViewPagerBinding)
-
             }
 
             TYPE_TRENDING_MOVIES_AND_SERIES -> {
