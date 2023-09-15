@@ -34,7 +34,7 @@ class SeriesViewModel @Inject constructor(
         jobSeries = getSeriesUseCase.executeGetSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateSeries.value = SeriesState(series = it.data ?: null)
+                    _stateSeries.value = SeriesState(series = it.data?.series ?: emptyList())
                 }
 
                 is Resource.Error -> {

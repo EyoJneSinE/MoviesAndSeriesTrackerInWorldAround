@@ -33,7 +33,7 @@ class SeriesSearchViewModel @Inject constructor(
         jobSearchSeries = getSearchSeriesUseCase.executeSearchSerieFromTMDB(search).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateSearchSeries.value = SeriesState(searchingSeries = it.data)
+                    _stateSearchSeries.value = SeriesState(searchingSeries = it.data?.series ?: emptyList())
                 }
 
                 is Resource.Error -> {

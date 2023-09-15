@@ -32,7 +32,7 @@ class TopRatedSeriesViewModel @Inject constructor(
         jobTopRatedSeries = getTopRatedSeriesUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateTopRatedSeries.value = SeriesState(topRatedSeries = it.data)
+                    _stateTopRatedSeries.value = SeriesState(topRatedSeries = it.data?.series ?: emptyList())
                 }
 
                 is Resource.Error -> {

@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.MoviesRecyclerRowBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.model.NowPlayingMovies
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.model.NowPlayingMovies.*
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.model.NowPlayingMovies.Movies
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Constants
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 
@@ -31,6 +30,7 @@ class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val movie = getItem(position)
+                    onItemClick(movie)
                 }
             }
         }

@@ -3,9 +3,11 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,6 +29,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewMo
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.MoviesSearchViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.MoviesViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.NowPlayingMoviesViewModel
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.model.TopRatedSeries
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -39,7 +42,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
     private val movieSearchViewModel: MoviesSearchViewModel by viewModels()
     private val movieViewModel: MoviesViewModel by viewModels()
     private val nowPlayingMoviesViewModel: NowPlayingMoviesViewModel by viewModels()
-    val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         findNavController()
     }
 
@@ -95,7 +98,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                             searchingMovieList?.let {
                                 if (search.isNotEmpty() ) {
                                     binding.moviesRecyclerView.adapter = MovieListAdapter {searchingMovie ->
-
+                                        navigateToMovieDetailsFragment(searchingMovie)
                                     }.apply { submitList(results) }
                                 } else {
                                     observeMovieViewModel()
@@ -128,7 +131,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                             }
                             nowPlayingMovieList?.let {
                                 binding.moviesRecyclerView.adapter = MovieListAdapter{movie ->
-
+                                    navigateToMovieDetailsFragment(movie)
                                 }.apply { submitList(nowPlayingMovieList) }
                             }
                         }
@@ -158,7 +161,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
             }
         }
     }
-    fun movieGenresToNowPlayingMovies(moviesGenre: MoviesGenre): MoviesGenre {
+    private fun movieGenresToNowPlayingMovies(moviesGenre: MoviesGenre): MoviesGenre {
         return MoviesGenre(
             id = moviesGenre.id ?: 0,
             name = moviesGenre.name ?: ""
@@ -179,6 +182,16 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
             nowPlayingMoviesReleaseDate = moviesResult.releaseDate ?: "",
             nowPlayingMoviesPoster = moviesResult.posterPath ?: ""
         )
+    }
+
+    private fun navigateToMovieDetailsFragment(movies: NowPlayingMovies.Movies) {
+        val bundle = bundleOf(
+            "moviesId" to movies.nowPlayingMoviesTitle
+        )
+        navController.navigate(R.id.action_moviesFragment_to_movieDetailsFragment)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            Log.d("Navigation", "Navigating to destination: ${destination.label}")
+        }
     }
 
 }
