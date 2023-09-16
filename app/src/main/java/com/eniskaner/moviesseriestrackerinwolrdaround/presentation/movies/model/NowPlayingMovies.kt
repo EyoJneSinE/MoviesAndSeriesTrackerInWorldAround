@@ -5,6 +5,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.adapte
 
 sealed class NowPlayingMovies : MovieDisplayItem {
     data class Movies(
+        val nowPlayingMoviesId: Int,
         val nowPlayingMoviesTitle: String,
         val nowPlayingMoviesGenre: List<String?>,
         val nowPlayingMoviesReleaseDate: String,

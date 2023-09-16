@@ -27,7 +27,7 @@ class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<
     inner class MovieViewHolder(private  val movieBinding: MoviesRecyclerRowBinding): RecyclerView.ViewHolder(movieBinding.root) {
         init {
             movieBinding.root.setOnClickListener {
-                val position = bindingAdapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val movie = getItem(position)
                     onItemClick(movie)

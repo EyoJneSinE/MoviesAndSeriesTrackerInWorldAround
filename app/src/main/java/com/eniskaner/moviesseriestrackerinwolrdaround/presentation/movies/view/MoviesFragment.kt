@@ -94,7 +94,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                             val searchingMovieList = searchingResource.moviesSearching.map { searchResult ->
                                 moviesResultToNowPlayingMovies(searchResult)
                             }
-                            val results = searchingMovieList.filter { it.nowPlayingMoviesTitle.contains(search.trim(), ignoreCase = true) }
+                            val results = searchingMovieList.filter { it.nowPlayingMoviesTitle.lowercase().contains(search.lowercase().trim(), ignoreCase = true) }
                             searchingMovieList?.let {
                                 if (search.isNotEmpty() ) {
                                     binding.moviesRecyclerView.adapter = MovieListAdapter {searchingMovie ->
@@ -177,6 +177,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
         }
 
         return NowPlayingMovies.Movies(
+            nowPlayingMoviesId = moviesResult.id ?: 0,
             nowPlayingMoviesTitle = moviesResult.originalTitle ?: "",
             nowPlayingMoviesGenre = movieGenreName ?: emptyList(),
             nowPlayingMoviesReleaseDate = moviesResult.releaseDate ?: "",
@@ -186,9 +187,9 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
 
     private fun navigateToMovieDetailsFragment(movies: NowPlayingMovies.Movies) {
         val bundle = bundleOf(
-            "moviesId" to movies.nowPlayingMoviesTitle
+            "moviesId" to movies.nowPlayingMoviesId
         )
-        navController.navigate(R.id.action_moviesFragment_to_movieDetailsFragment)
+        navController.navigate(R.id.action_moviesFragment_to_movieDetailsFragment,bundle)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.d("Navigation", "Navigating to destination: ${destination.label}")
         }

@@ -84,7 +84,7 @@ class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
                             val searchingMovieList = searchingResource.searchingSeries.map { searchResult ->
                                 seriesResultToTopRatedSeries(searchResult)
                             }
-                            val results = searchingMovieList.filter { it.topRatedSeriesTitle.contains(search.trim(), ignoreCase = true) }
+                            val results = searchingMovieList.filter { it.topRatedSeriesTitle.lowercase().contains(search.lowercase().trim(), ignoreCase = true) }
                             searchingMovieList?.let {
                                 if (search.isNotEmpty() ) {
                                     binding.seriesRecyclerView.adapter = SeriesListAdapter {searchingSeries ->
@@ -167,7 +167,7 @@ class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
         val bundle = bundleOf(
             "seriesId" to series.topRatedSeriesId
         )
-        navController.navigate(R.id.action_seriesFragment_to_seriesDetailsFragment)
+        navController.navigate(R.id.action_seriesFragment_to_seriesDetailsFragment, bundle)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.d("Navigation", "Navigating to destination: ${destination.label}")
         }

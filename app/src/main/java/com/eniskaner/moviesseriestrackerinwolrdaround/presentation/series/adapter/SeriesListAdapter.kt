@@ -32,7 +32,7 @@ class SeriesListAdapter(private val onItemClick: (Series) -> Unit): ListAdapter<
     inner class SeriesViewHolder(private val seriesBinding: SeriesRecyclerRowBinding) : RecyclerView.ViewHolder(seriesBinding.root) {
         init {
             seriesBinding.root.setOnClickListener {
-                val position = bindingAdapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val series = getItem(position)
                     onItemClick(series)
