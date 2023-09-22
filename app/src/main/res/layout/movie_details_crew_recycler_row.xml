@@ -55,21 +55,21 @@
         android:layout_marginHorizontal="16dp">
 
         <TextView
-            android:id="@+id/movieDetailsCrewCharacterTextView"
+            android:id="@+id/movieDetailsCrewJobTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Character:"
             android:layout_marginEnd="5dp"
-            android:textStyle="bold"
+            android:text="Job:"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/movieDetailsCrewCharacterContentsTextView"
+            android:id="@+id/movieDetailsCrewJobContentsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Character Contents"
+            android:text="Job Contents"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent" />

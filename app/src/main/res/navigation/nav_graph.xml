@@ -39,7 +39,11 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.view.MovieDetailsFragment"
         android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details" >
+        <argument
+            android:name="moviesId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/seriesDetailsFragment"
         android:name="com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series_details.view.SeriesDetailsFragment"

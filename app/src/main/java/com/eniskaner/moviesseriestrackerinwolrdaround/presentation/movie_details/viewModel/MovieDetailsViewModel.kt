@@ -32,7 +32,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getMovieDetails(imdbId: Int) {
+    fun getMovieDetails(imdbId: Int) {
         jobMovieDetails?.cancel()
         jobMovieDetails = getMovieDetailsUseCase.executeGetMovieDetailsFromTMDB(imdbId).onEach {
             when (it) {
