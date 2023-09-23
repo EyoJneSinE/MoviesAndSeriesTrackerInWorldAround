@@ -10,7 +10,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter
 sealed class TrendingDataModel: DisplayItem {
     data class TrendingMoviesAndSeries(
         val movie: TrendingMovies?,
-        val series: TrendingSeries?
+        val series: TrendingSeries?,
     ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
             return TYPE_TRENDING_MOVIES_AND_SERIES
@@ -36,7 +36,7 @@ sealed class TrendingDataModel: DisplayItem {
         }
     }
     data class TrendingHorizontal(
-        val trendingHorizontal: List<TrendingHorizontalViewPager>
+        var trendingHorizontal: List<TrendingHorizontalViewPager> = emptyList()
     ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
             return TYPE_TRENDING_HORIZONTAL

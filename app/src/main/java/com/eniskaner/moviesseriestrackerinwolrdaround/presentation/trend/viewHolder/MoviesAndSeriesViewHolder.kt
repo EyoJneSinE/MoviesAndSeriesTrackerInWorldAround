@@ -15,33 +15,8 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 class MoviesAndSeriesViewHolder(
     private val trendingMoviesAndSeriesElementsRowBinding: TrendingMoviesAndSeriesElementsRowBinding
 ): RecyclerView.ViewHolder(trendingMoviesAndSeriesElementsRowBinding.root)  {
-    fun bindTrendingMovies(trendingMoviesItem: TrendingDataModel.TrendingMovies) {
-        Log.d("TrendingDataAdapterViewHolder", "Binding TrendingMovies: Title - ${trendingMoviesItem.moviesTitle}")
-        trendingMoviesAndSeriesElementsRowBinding.apply {
-            trendingMoviesTitleTextView.text = trendingMoviesItem.moviesTitle
-            trendingMoviesAirDateTextView.text = trendingMoviesItem.moviesAirDate
-            val trendingMoviePoster = POSTER_URL + trendingMoviesItem.moviesPoster
-            trendingMoviesImageView.load(trendingMoviePoster)
-        }
-    }
-    fun bindTrendingSeries(trendingSeriesItem: TrendingDataModel.TrendingSeries) {
-        //viewbinding
-        //gridview
-        //listadapter
-        //type'ların tekillestirmesi
-        //viewholder'ların düzenlenmesi
-
-        Log.d("TrendingDataAdapterViewHolder", "Binding TrendingSeries: Title - ${trendingSeriesItem.seriesTitle}")
-        trendingMoviesAndSeriesElementsRowBinding.apply {
-            trendingSeriesTitleTextView.text = trendingSeriesItem.seriesTitle
-            trendingSeriesAirDateTextView.text = trendingSeriesItem.seriesFirstAirDate
-            val trendingSeriesPoster = POSTER_URL + trendingSeriesItem.seriesPoster
-            trendingSeriesImageView.load(trendingSeriesPoster)
-        }
-    }
 
     fun bindTrendingMoviesAndSeries(trendingMoviesAndSeriesItem: TrendingDataModel.TrendingMoviesAndSeries) {
-        Log.d("TrendingDataAdapterViewHolder", "Binding TrendingMoviesAndSeries: Title - $trendingMoviesAndSeriesItem")
         val movie = trendingMoviesAndSeriesItem.movie
         val series = trendingMoviesAndSeriesItem.series
 
@@ -57,3 +32,9 @@ class MoviesAndSeriesViewHolder(
         }
     }
 }
+
+//viewbinding
+//gridview
+//listadapter
+//type'ların tekillestirmesi
+//viewholder'ların düzenlenmesi

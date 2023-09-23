@@ -5,10 +5,10 @@ interface DisplayItem {
 
     companion object {
         const val TYPE_TRENDING_HORIZONTAL = 0
-        const val TYPE_TRENDING_HORIZONTAL_VIEW_PAGER = 4
         const val TYPE_TRENDING_MOVIES_AND_SERIES = 1
         const val TYPE_TRENDING_MOVIE = 2
         const val TYPE_TRENDING_SERIES = 3
+        const val TYPE_TRENDING_HORIZONTAL_VIEW_PAGER = 4
     }
 }
 
