@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarouselRecyclerViewBinding
+import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.CarouselViewPagerBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.TrendingMoviesAndSeriesElementsRowBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIES_AND_SERIES
@@ -12,21 +12,22 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.T
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewHolder.HorizontalViewPagerViewHolder
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewHolder.MoviesAndSeriesViewHolder
 
-class TrendingDataAdapter :
+class TrendingDataAdapter( private val trendingAdapterListener: TrendingAdapterListener,) :
     ListAdapter<TrendingDataModel, RecyclerView.ViewHolder>(TrendingDataDiffCallback()) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_TRENDING_HORIZONTAL -> {
                 val horizontalViewPagerBinding =
-                    CarouselRecyclerViewBinding.inflate(layoutInflater, parent, false)
+                    CarouselViewPagerBinding.inflate(layoutInflater, parent, false)
                 HorizontalViewPagerViewHolder(horizontalViewPagerBinding)
             }
             TYPE_TRENDING_MOVIES_AND_SERIES -> {
                 val movieAndSeriesBinding =
                     TrendingMoviesAndSeriesElementsRowBinding.inflate(layoutInflater, parent, false)
-                MoviesAndSeriesViewHolder(movieAndSeriesBinding)
+                MoviesAndSeriesViewHolder(movieAndSeriesBinding, trendingAdapterListener)
             }
             else -> throw IllegalArgumentException("Invalid Type")
         }
@@ -34,26 +35,17 @@ class TrendingDataAdapter :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        when (item.type()) {
-            TYPE_TRENDING_HORIZONTAL -> {
-                val trendingHorizontalViewPagerViewHolder = holder as HorizontalViewPagerViewHolder
 
-                trendingHorizontalViewPagerViewHolder.bindTrendingHorizontalViewPager(
-                    item as TrendingDataModel.TrendingHorizontal
-                )
+        when (holder) {
+            is HorizontalViewPagerViewHolder -> {
+                holder.bindTrendingHorizontalViewPager(item as TrendingDataModel.TrendingHorizontal)
             }
-            TYPE_TRENDING_MOVIES_AND_SERIES -> {
-                val trendingMovieAndSeriesHolder = holder as MoviesAndSeriesViewHolder
-                trendingMovieAndSeriesHolder.bindTrendingMoviesAndSeries(item as TrendingDataModel.TrendingMoviesAndSeries)
+            is MoviesAndSeriesViewHolder -> {
+                holder.bindTrendingMoviesAndSeries(item as TrendingDataModel.TrendingMoviesAndSeries)
             }
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is TrendingDataModel.TrendingHorizontal -> TYPE_TRENDING_HORIZONTAL
-            is TrendingDataModel.TrendingMoviesAndSeries -> TYPE_TRENDING_MOVIES_AND_SERIES
-            else -> throw IllegalArgumentException("Invalid Type")
-        }
-    }
+    override fun getItemViewType(position: Int) = getItem(position).type()
+
 }

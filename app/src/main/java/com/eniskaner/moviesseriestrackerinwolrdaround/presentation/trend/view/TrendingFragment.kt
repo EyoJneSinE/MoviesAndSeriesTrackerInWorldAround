@@ -4,9 +4,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentTrendingBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_HORIZONTAL
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIE
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIES_AND_SERIES
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_SERIES
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.TrendingAdapterListener
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.TrendingDataAdapter
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModelProvider
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.viewModel.TrendingSeriesAndMoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,11 +24,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
+class TrendingFragment : BaseFragment<FragmentTrendingBinding>(), TrendingAdapterListener{
+
+    private val navController: NavController by lazy {
+        findNavController()
+    }
 
     private val trendingSeriesAndMoviesViewModel: TrendingSeriesAndMoviesViewModel by viewModels()
     private val trendingDataAdapter: TrendingDataAdapter by lazy {
-        TrendingDataAdapter()
+        TrendingDataAdapter(this@TrendingFragment)
     }
 
     @Inject
@@ -55,8 +68,30 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
                     moviesState,seriesState
                 )
             }.collect { trendingData ->
-                trendingDataAdapter.submitList(trendingData)
+                trendingData?.let {
+                    trendingDataAdapter.submitList(trendingData)
+                }
             }
         }
     }
+    fun navigateToMovieDetails(movies: TrendingDataModel.TrendingMovies) {
+        val actionMovies = TrendingFragmentDirections.actionTrendingFragmentToMovieDetailsFragment(moviesId = movies.moviesId)
+        navController.navigate(actionMovies)
+    }
+    fun navigateToSeriesDetails(series: TrendingDataModel.TrendingSeries) {
+        val actionSeries = TrendingFragmentDirections.actionTrendingFragmentToSeriesDetailsFragment(seriesId = series.seriesId)
+        navController.navigate(actionSeries)
+    }
+
+    override fun onSeriesClick(series: TrendingDataModel.TrendingSeries?) {
+        series?.let {
+            navigateToSeriesDetails(series)
+        }
+    }
+
+    override fun onMoviesClick(movie: TrendingDataModel.TrendingMovies?) {
+        movie?.let { navigateToMovieDetails(movie) }
+    }
 }
+
+

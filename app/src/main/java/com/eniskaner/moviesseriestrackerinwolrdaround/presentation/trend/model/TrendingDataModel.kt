@@ -20,7 +20,8 @@ sealed class TrendingDataModel: DisplayItem {
     data class TrendingMovies(
         val moviesPoster: String,
         val moviesTitle: String,
-        val moviesAirDate: String
+        val moviesAirDate: String,
+        val moviesId: Int
         ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
             return TYPE_TRENDING_MOVIE
@@ -29,7 +30,8 @@ sealed class TrendingDataModel: DisplayItem {
     data class TrendingSeries(
         val seriesPoster: String,
         val seriesTitle: String,
-        val seriesFirstAirDate: String
+        val seriesFirstAirDate: String,
+        val seriesId: Int
     ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
             return TYPE_TRENDING_SERIES
