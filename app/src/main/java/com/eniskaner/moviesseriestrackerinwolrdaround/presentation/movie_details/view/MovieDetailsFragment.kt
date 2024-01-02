@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movie_details.GetMovieDetailsFromId
 import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.MovieCast
 import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.MovieCrew
@@ -32,17 +33,18 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
     /*private val movieDetailsAdapter: MovieDetailsAdapter by lazy {
         MovieDetailsAdapter()
     }*/
-    private val movieDetailsList = mutableListOf<MovieDetails>()
+   private val movieDetailsList = mutableListOf<MovieDetails>()
 
     override fun setBinding(): FragmentMovieDetailsBinding =
         FragmentMovieDetailsBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*val movieId = arguments?.getString("moviesId")
+        binding.movieDetailsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val movieId = arguments?.getInt("moviesId", 0)
         movieId?.let {
-            movieDetailsViewModel.getMovieDetails(it.toInt())
-        }*/
+            movieDetailsViewModel.getMovieDetails(it)
+        }
         observeMovieDetailsViewModel()
     }
 
@@ -50,9 +52,6 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
         viewLifecycleOwner.lifecycleScope.apply {
             launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-
-
                     movieDetailsViewModel.apply {
                         stateMovieDetails.collect { resource ->
 
@@ -71,20 +70,12 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
                                         movieDetailsVerticalPoster = movieDetailList.posterPath ?: "",
                                         movieDetailsHorizontalPoster = movieDetailList.backdropPath ?: ""
                                     )
+                                    movieDetailsList.add(movieDetailsData)
                                     binding.movieDetailsRecyclerView.adapter = MovieDetailsAdapter {movieDetails ->
 
-                                    }.apply { movieDetailsList.add(movieDetailsData) }
+                                    }.apply { submitList(movieDetailsList) }
                                 }
                             }
-
-                            /*val movieDetailsList = resource.movieDetails.run { movieDetailsResult ->
-                                getMovieDetailsFromIdToMovieDetails(movieDetailsResult)
-                            }*/
-                            /*movieDetailsList?.let {
-                                binding.movieDetailsRecyclerView.adapter = MovieDetailsAdapter{movieDetails ->
-
-                                }.apply { submitList(movieDetailsList) }
-                            }*/
                         }
                     }
                 }

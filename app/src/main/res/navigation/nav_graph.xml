@@ -42,11 +42,15 @@
         tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="moviesId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/seriesDetailsFragment"
         android:name="com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series_details.view.SeriesDetailsFragment"
         android:label="fragment_series_details"
-        tools:layout="@layout/fragment_series_details" />
+        tools:layout="@layout/fragment_series_details">
+        <argument
+            android:name="seriesId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

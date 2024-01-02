@@ -56,7 +56,8 @@ class TrendingDataModelProvider @Inject constructor() {
         return TrendingDataModel.TrendingMovies(
             moviesPoster = moviesResult.posterPath ?: "",
             moviesTitle = moviesResult.title ?: "",
-            moviesAirDate = moviesResult.releaseDate ?: ""
+            moviesAirDate = moviesResult.releaseDate ?: "",
+            moviesId = moviesResult.id ?: 0
         )
     }
 
@@ -64,7 +65,8 @@ class TrendingDataModelProvider @Inject constructor() {
         return TrendingDataModel.TrendingSeries(
             seriesPoster = seriesResult.posterPath ?: "",
             seriesTitle = seriesResult.name ?: "",
-            seriesFirstAirDate = seriesResult.firstAirDate ?: ""
+            seriesFirstAirDate = seriesResult.firstAirDate ?: "",
+            seriesId = seriesResult.id ?: 0
         )
     }
 

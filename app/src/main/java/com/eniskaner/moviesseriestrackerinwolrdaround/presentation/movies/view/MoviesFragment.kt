@@ -187,9 +187,10 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
 
     private fun navigateToMovieDetailsFragment(movies: NowPlayingMovies.Movies) {
         val bundle = bundleOf(
-            "moviesId" to movies.nowPlayingMoviesId.toString()
+            "moviesId" to movies.nowPlayingMoviesId
         )
-        navController.navigate(R.id.action_moviesFragment_to_movieDetailsFragment , bundle)
+        val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movies.nowPlayingMoviesId)
+        navController.navigate(action)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.d("Navigation", "Navigating to destination: ${destination.label}")
         }
