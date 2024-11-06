@@ -43,6 +43,9 @@
         <argument
             android:name="moviesId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_bottomSheetTrailerFragment"
+            app:destination="@id/bottomSheetTrailerFragment" />
     </fragment>
     <fragment
         android:id="@+id/seriesDetailsFragment"
@@ -52,5 +55,32 @@
         <argument
             android:name="seriesId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottomSheetTrailerFragment"
+        android:name="com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.view.BottomSheetTrailerFragment"
+        android:label="fragment_bottom_sheet_trailer"
+        tools:layout="@layout/fragment_bottom_sheet_trailer" >
+        <argument
+            android:name="trailerName"
+            app:argType="string" />
+        <argument
+            android:name="trailerKey"
+            app:argType="string" />
+        <argument
+            android:name="trailerType"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_bottomSheetTrailerFragment_to_fullScreenTrailerFragment"
+            app:destination="@id/fullScreenTrailerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullScreenTrailerFragment"
+        android:name="com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.view.FullScreenTrailerFragment"
+        android:label="fragment_full_screen_trailer"
+        tools:layout="@layout/fragment_full_screen_trailer" >
+        <argument
+            android:name="trailerId"
+            app:argType="string" />
     </fragment>
 </navigation>

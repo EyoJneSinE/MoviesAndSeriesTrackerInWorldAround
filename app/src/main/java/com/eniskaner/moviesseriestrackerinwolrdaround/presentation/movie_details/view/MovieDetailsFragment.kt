@@ -2,38 +2,47 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movie_details.GetMovieDetailsFromId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.MovieCast
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.MovieCrew
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_video.MoviesTrailerResult
+import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentMovieDetailsBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.adapter.MovieDetailsAdapter
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.adapter.MovieDetailsAdapterListener
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.model.MovieDetails
+import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.model.MovieDetailsDataProvider
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.viewModel.MovieDetailsViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.viewModel.MoviesCastViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.viewModel.MoviesCrewViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movie_details.viewModel.MoviesTrailerViewModel
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.adapter.MovieListAdapter
+import com.eniskaner.moviesseriestrackerinwolrdaround.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
+class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>(),
+    MovieDetailsAdapterListener {
 
     private val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
     private val movieDetailsCastViewModel: MoviesCastViewModel by viewModels()
     private val movieDetailsCrewViewModel: MoviesCrewViewModel by viewModels()
     private val movieDetailsTrailerViewModel: MoviesTrailerViewModel by viewModels()
-    /*private val movieDetailsAdapter: MovieDetailsAdapter by lazy {
-        MovieDetailsAdapter()
-    }*/
-   private val movieDetailsList = mutableListOf<MovieDetails>()
+
+    @Inject
+    lateinit var dataProvider: MovieDetailsDataProvider
+
+    private val movieDetailsAdapter: MovieDetailsAdapter by lazy {
+        MovieDetailsAdapter(this@MovieDetailsFragment)
+    }
+
+    private val navController: NavController by lazy {
+        findNavController()
+    }
 
     override fun setBinding(): FragmentMovieDetailsBinding =
         FragmentMovieDetailsBinding.inflate(layoutInflater)
@@ -44,84 +53,64 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding>() {
         val movieId = arguments?.getInt("moviesId", 0)
         movieId?.let {
             movieDetailsViewModel.getMovieDetails(it)
+            movieDetailsCastViewModel.getMovieCast(it)
+            movieDetailsCrewViewModel.getMovieCrew(it)
+            movieDetailsTrailerViewModel.getMovieTrailer(it)
         }
-        observeMovieDetailsViewModel()
+        init()
+        getMovieDetailsData()
     }
 
-    private fun observeMovieDetailsViewModel() {
-        viewLifecycleOwner.lifecycleScope.apply {
+    private fun init() {
+        setTrendingRecyclerView()
+    }
+
+    private fun setTrendingRecyclerView() {
+        binding.movieDetailsRecyclerView.run {
+            hasFixedSize()
+            adapter = movieDetailsAdapter
+        }
+    }
+
+    private fun getMovieDetailsData() {
+        launchAndRepeatWithViewLifecycle {
             launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    movieDetailsViewModel.apply {
-                        stateMovieDetails.collect { resource ->
-
-                            val movieDetailList = resource.movieDetails
-                            movieDetailList?.let {
-                                getMovieDetailsFromIdToMovieDetails(movieDetailList)
-                            }
-                            movieDetailList?.let {
-                                if (movieDetailList.genres.isNotEmpty()) {
-                                    val movieDetailsData = MovieDetails.GetMovieDetailsFromId(
-                                        movieDetailsTagline = movieDetailList.tagline ?: "",
-                                        movieDetailsReleaseDate = movieDetailList.releaseDate ?: "",
-                                        movieDetailsOverview = movieDetailList.overview ?: "",
-                                        movieDetailsOriginalTitle = movieDetailList.originalTitle ?: "",
-                                        movieDetailsGenre =  "",
-                                        movieDetailsVerticalPoster = movieDetailList.posterPath ?: "",
-                                        movieDetailsHorizontalPoster = movieDetailList.backdropPath ?: ""
-                                    )
-                                    movieDetailsList.add(movieDetailsData)
-                                    binding.movieDetailsRecyclerView.adapter = MovieDetailsAdapter {movieDetails ->
-
-                                    }.apply { submitList(movieDetailsList) }
-                                }
-                            }
-                        }
+                combine(
+                    movieDetailsViewModel.stateMovieDetails,
+                    movieDetailsCastViewModel.stateMovieCast,
+                    movieDetailsCrewViewModel.stateMovieCrew,
+                    movieDetailsTrailerViewModel.stateMovieTrailer
+                ) { movieDetailsState, movieDetailsCastState, movieDetailsCrewState, movieDetailsTrailerState ->
+                    dataProvider.getMovieDetailsData(
+                        movieDetailsState,
+                        movieDetailsCastState,
+                        movieDetailsCrewState,
+                        movieDetailsTrailerState
+                    )
+                }.collect { movieDetailListData ->
+                    movieDetailListData.let {
+                        movieDetailsAdapter.submitList(movieDetailListData)
                     }
                 }
             }
         }
     }
 
-    private fun getMovieDetailsCastToMovieDetails(
-        getMovieDetailsCast: MovieCast
-    ): MovieDetails.GetMovieDetailsCast {
-        return MovieDetails.GetMovieDetailsCast(
-            movieDetailsCastPoster = getMovieDetailsCast.moviesCastProfilePath ?: "",
-            movieDetailsCastName = getMovieDetailsCast.moviesCastName ?: "",
-            movieDetailsCastCharacterName = getMovieDetailsCast.moviesCastCharacter ?: ""
+    private fun navigateToMovieDetails(trailer: MovieDetails.GetMovieDetailsTrailer?) {
+        val bundle = bundleOf(
+            "trailerName" to trailer?.movieDetailsTrailerName,
+            "trailerKey" to trailer?.movieDetailsTrailerKey,
+            "trailerType" to trailer?.movieDetailsTrailerType
+        )
+        navController.navigate(
+            R.id.action_movieDetailsFragment_to_bottomSheetTrailerFragment,
+            bundle
         )
     }
 
-    private fun getMovieDetailsCrewToMovieDetails(
-        getMovieDetailsCrew: MovieCrew
-    ): MovieDetails.GetMovieDetailsCrew {
-        return MovieDetails.GetMovieDetailsCrew(
-            movieDetailsCrewPoster = getMovieDetailsCrew.moviesCrewProfilePath ?: "",
-            movieDetailsCrewName = getMovieDetailsCrew.moviesCrewName ?: "",
-            movieDetailsCrewJob = getMovieDetailsCrew.moviesCrewJob ?: ""
-        )
-    }
-
-    private fun getMovieDetailsTrailerToMovieDetails(
-        getMovieDetailsTrailer: MoviesTrailerResult
-    ): MovieDetails.GetMovieDetailsTrailer {
-        return MovieDetails.GetMovieDetailsTrailer(
-            movieDetailsTrailerKey = getMovieDetailsTrailer.key ?: ""
-        )
-    }
-
-    private fun getMovieDetailsFromIdToMovieDetails(
-        getMovieDetailsFromId: GetMovieDetailsFromId
-    ): MovieDetails.GetMovieDetailsFromId {
-        return MovieDetails.GetMovieDetailsFromId(
-            movieDetailsHorizontalPoster = getMovieDetailsFromId.backdropPath ?: "",
-            movieDetailsVerticalPoster = getMovieDetailsFromId.posterPath ?: "",
-            movieDetailsGenre =  "",
-            movieDetailsOriginalTitle = getMovieDetailsFromId.originalTitle ?: "",
-            movieDetailsOverview = getMovieDetailsFromId.overview ?: "",
-            movieDetailsReleaseDate = getMovieDetailsFromId.releaseDate ?: "",
-            movieDetailsTagline = getMovieDetailsFromId.tagline ?: ""
-        )
+    override fun onTrailerClick(trailer: MovieDetails.GetMovieDetailsTrailer?) {
+        trailer?.let {
+            navigateToMovieDetails(trailer)
+        }
     }
 }
