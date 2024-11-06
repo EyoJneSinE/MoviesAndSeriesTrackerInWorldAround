@@ -59,8 +59,14 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
 
     private fun setupViewsWithSearch() {
         binding.apply {
-            moviesSearchEditText.addTextChangedListener(object : TextWatcher{
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            moviesSearchEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     val searchingMovieText = s.toString()
@@ -76,12 +82,10 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
 
                 }
 
-                override fun afterTextChanged(s: Editable?) {
-
-                }
-
+                override fun afterTextChanged(s: Editable?) {}
             })
             moviesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         }
     }
 
@@ -90,26 +94,24 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
             launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     movieSearchViewModel.apply {
-                        stateSearchMovies.collect{searchingResource ->
-                            val searchingMovieList = searchingResource.moviesSearching.map { searchResult ->
-                                moviesResultToNowPlayingMovies(searchResult)
+                        stateSearchMovies.collect { searchingResource ->
+                            val searchingMovieList =
+                                searchingResource.moviesSearching.map { searchResult ->
+                                    moviesResultToNowPlayingMovies(searchResult)
+                                }
+                            val results = searchingMovieList.filter {
+                                it.nowPlayingMoviesTitle.lowercase()
+                                    .contains(search.lowercase().trim(), ignoreCase = true)
                             }
-                            val results = searchingMovieList.filter { it.nowPlayingMoviesTitle.lowercase().contains(search.lowercase().trim(), ignoreCase = true) }
-                            searchingMovieList?.let {
-                                if (search.isNotEmpty() ) {
-                                    binding.moviesRecyclerView.adapter = MovieListAdapter {searchingMovie ->
-                                        navigateToMovieDetailsFragment(searchingMovie)
-                                    }.apply { submitList(results) }
+                            searchingMovieList.let {
+                                if (search.isNotEmpty()) {
+                                    binding.moviesRecyclerView.adapter =
+                                        MovieListAdapter { searchingMovie ->
+                                            navigateToMovieDetailsFragment(searchingMovie)
+                                        }.apply { submitList(results) }
                                 } else {
                                     observeMovieViewModel()
                                 }
-                                /*if (search.isEmpty()) {
-                                    observeMovieViewModel()
-                                } else {
-                                    binding.moviesRecyclerView.adapter = MovieListAdapter{searchingMovie ->
-
-                                    }.apply { submitList(searchingMovieList) }
-                                }*/
                             }
                         }
                     }
@@ -130,7 +132,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                                 moviesResultToNowPlayingMovies(movieResult)
                             }
                             nowPlayingMovieList?.let {
-                                binding.moviesRecyclerView.adapter = MovieListAdapter{movie ->
+                                binding.moviesRecyclerView.adapter = MovieListAdapter { movie ->
                                     navigateToMovieDetailsFragment(movie)
                                 }.apply { submitList(nowPlayingMovieList) }
                             }
@@ -140,13 +142,14 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
             }
         }
     }
+
     private fun observeGenreViewModel() {
         viewLifecycleOwner.lifecycleScope.apply {
             launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     movieGenreViewModel.apply {
                         val genreResource = stateMoviesGenre.value
-                        if (genreResource != null && genreResource.moviesGenre.isNotEmpty()) {
+                        if (genreResource.moviesGenre.isNotEmpty()) {
                             val genreMovieList = genreResource.moviesGenre.map {
                                 movieGenresToNowPlayingMovies(it)
                             }
@@ -161,18 +164,21 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
             }
         }
     }
+
     private fun movieGenresToNowPlayingMovies(moviesGenre: MoviesGenre): MoviesGenre {
         return MoviesGenre(
             id = moviesGenre.id ?: 0,
             name = moviesGenre.name ?: ""
         )
     }
-    fun moviesResultToNowPlayingMovies(moviesResult: MoviesResult): NowPlayingMovies.Movies {
 
-        val movieGenre = movieGenreViewModel.stateMoviesGenre.value.moviesGenre.filter { moviesGenre ->
-            moviesResult.genreIds.any { it == moviesGenre.id }
-        }
-        val movieGenreName =  movieGenre.map{moviesGenreName ->
+    private fun moviesResultToNowPlayingMovies(moviesResult: MoviesResult): NowPlayingMovies.Movies {
+
+        val movieGenre =
+            movieGenreViewModel.stateMoviesGenre.value.moviesGenre.filter { moviesGenre ->
+                moviesResult.genreIds.any { it == moviesGenre.id }
+            }
+        val movieGenreName = movieGenre.map { moviesGenreName ->
             moviesGenreName.name
         }
 
@@ -189,11 +195,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
         val bundle = bundleOf(
             "moviesId" to movies.nowPlayingMoviesId
         )
-        val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movies.nowPlayingMoviesId)
-        navController.navigate(action)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            Log.d("Navigation", "Navigating to destination: ${destination.label}")
-        }
+        navController.navigate(R.id.action_moviesFragment_to_movieDetailsFragment, bundle)
     }
 
 }
