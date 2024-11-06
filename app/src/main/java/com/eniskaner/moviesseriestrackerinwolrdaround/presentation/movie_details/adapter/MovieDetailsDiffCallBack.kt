@@ -36,3 +36,46 @@ class MovieDetailsDiffCallBack: DiffUtil.ItemCallback<MovieDetails>() {
         return oldItem == newItem
     }
 }
+
+class MovieDetailsCastDiffCallBack : DiffUtil.ItemCallback<MovieDetails.GetMovieDetailsCast>() {
+    override fun areItemsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsCast,
+        newItem: MovieDetails.GetMovieDetailsCast
+    ): Boolean = oldItem.movieDetailsCastName == newItem.movieDetailsCastName ||
+            oldItem.movieDetailsCastCharacterName == newItem.movieDetailsCastCharacterName ||
+            oldItem.movieDetailsCastPoster == newItem.movieDetailsCastPoster
+
+    override fun areContentsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsCast,
+        newItem: MovieDetails.GetMovieDetailsCast
+    ): Boolean = oldItem == newItem
+
+}
+
+class MovieDetailsCrewDiffCallBack : DiffUtil.ItemCallback<MovieDetails.GetMovieDetailsCrew>() {
+    override fun areItemsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsCrew,
+        newItem: MovieDetails.GetMovieDetailsCrew
+    ): Boolean = oldItem.movieDetailsCrewJob == newItem.movieDetailsCrewJob ||
+            oldItem.movieDetailsCrewPoster == newItem.movieDetailsCrewPoster ||
+            oldItem.movieDetailsCrewName == newItem.movieDetailsCrewName
+
+    override fun areContentsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsCrew,
+        newItem: MovieDetails.GetMovieDetailsCrew
+    ): Boolean = oldItem == newItem
+
+}
+
+class MovieDetailsTrailerDiffCallBack : DiffUtil.ItemCallback<MovieDetails.GetMovieDetailsTrailer>() {
+    override fun areItemsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsTrailer,
+        newItem: MovieDetails.GetMovieDetailsTrailer
+    ): Boolean = oldItem.movieDetailsTrailerKey == newItem.movieDetailsTrailerKey
+
+    override fun areContentsTheSame(
+        oldItem: MovieDetails.GetMovieDetailsTrailer,
+        newItem: MovieDetails.GetMovieDetailsTrailer
+    ): Boolean = oldItem == newItem
+
+}

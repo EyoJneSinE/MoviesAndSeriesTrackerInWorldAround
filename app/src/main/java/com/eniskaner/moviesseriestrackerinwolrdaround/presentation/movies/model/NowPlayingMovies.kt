@@ -4,15 +4,17 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.adapte
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.adapter.MovieDisplayItem.Companion.TYPE_MOVIES
 
 sealed class NowPlayingMovies : MovieDisplayItem {
+
     data class Movies(
         val nowPlayingMoviesId: Int,
         val nowPlayingMoviesTitle: String,
         val nowPlayingMoviesGenre: List<String?>,
         val nowPlayingMoviesReleaseDate: String,
         val nowPlayingMoviesPoster: String
-    ): NowPlayingMovies(), MovieDisplayItem {
+    ) : NowPlayingMovies(), MovieDisplayItem {
         override fun type(): Int {
             return TYPE_MOVIES
         }
     }
+
 }

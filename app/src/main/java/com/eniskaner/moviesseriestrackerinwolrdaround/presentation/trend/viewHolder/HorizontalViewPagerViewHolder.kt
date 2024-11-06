@@ -23,7 +23,7 @@ class HorizontalViewPagerViewHolder(
 
     private var isUserTouching = false
 
-    private lateinit var handler : Handler
+    private lateinit var handler: Handler
 
     private val runnable = object : Runnable {
         override fun run() {
@@ -42,7 +42,8 @@ class HorizontalViewPagerViewHolder(
         init(item)
         setUpTransformer()
 
-        binding.carouselViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.carouselViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -56,43 +57,22 @@ class HorizontalViewPagerViewHolder(
                 binding.carouselViewPager.translationX = positionOffset
 
 
-
             }
+
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                //handler.removeCallbacks(runnable)
-                //handler.postDelayed(runnable , 3000)
 
-                updatePageNumberText(position + 1 ,binding.carouselViewPager.adapter?.itemCount ?: 0)
+                updatePageNumberText(
+                    position + 1,
+                    binding.carouselViewPager.adapter?.itemCount ?: 0
+                )
 
             }
         })
 
-
-
-        /*binding.carouselViewPager.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    isUserTouching = true
-                    handler.removeCallbacks(runnable)
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    isUserTouching = false
-                    handler.postDelayed(runnable, 3000)
-                }
-            }
-            false
-        }*/
-
-
-
-
-
-        /*binding.carouselRecyclerView.layoutManager =
-            LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)*/
     }
 
-    private fun setUpTransformer(){
+    private fun setUpTransformer() {
         val transformer = CompositePageTransformer()
         transformer.addTransformer(MarginPageTransformer(10))
         transformer.addTransformer { page, position ->
@@ -100,13 +80,10 @@ class HorizontalViewPagerViewHolder(
             page.scaleY = 0.75f + r * 0.24f
         }
 
-
-
         binding.carouselViewPager.setPageTransformer(transformer)
     }
-    private fun init(item: TrendingDataModel.TrendingHorizontal){
-        //handler = Handler(Looper.myLooper()!!)
 
+    private fun init(item: TrendingDataModel.TrendingHorizontal) {
 
         binding.carouselViewPager.adapter =
             HorizontalViewPagerAdapter().apply {
@@ -117,8 +94,6 @@ class HorizontalViewPagerViewHolder(
         binding.carouselViewPager.clipChildren = false
         binding.carouselViewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
-        //handler.postDelayed(runnable, 3000)
-
     }
 
     private fun updatePageNumberText(currentPage: Int, totalPageCount: Int) {
@@ -127,6 +102,4 @@ class HorizontalViewPagerViewHolder(
 
     }
 
-
 }
-

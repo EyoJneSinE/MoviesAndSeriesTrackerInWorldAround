@@ -31,7 +31,7 @@ class MoviesTrailerViewModel @Inject constructor(
         }
     }
 
-    private fun getMovieTrailer(imdbId: Int) {
+    fun getMovieTrailer(imdbId: Int) {
         jobMovieTrailers?.cancel()
         jobMovieTrailers = getMovieTrailerUseCase.executeGetVideosFromTMDB(imdbId).onEach {
             when (it) {

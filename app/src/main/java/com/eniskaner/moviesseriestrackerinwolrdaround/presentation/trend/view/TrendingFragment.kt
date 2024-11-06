@@ -2,10 +2,12 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentTrendingBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem
@@ -24,13 +26,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrendingFragment : BaseFragment<FragmentTrendingBinding>(), TrendingAdapterListener{
+class TrendingFragment : BaseFragment<FragmentTrendingBinding>(), TrendingAdapterListener {
 
     private val navController: NavController by lazy {
         findNavController()
     }
 
     private val trendingSeriesAndMoviesViewModel: TrendingSeriesAndMoviesViewModel by viewModels()
+
     private val trendingDataAdapter: TrendingDataAdapter by lazy {
         TrendingDataAdapter(this@TrendingFragment)
     }
@@ -63,24 +66,30 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>(), TrendingAdapte
             combine(
                 trendingSeriesAndMoviesViewModel.trendingMoviesState,
                 trendingSeriesAndMoviesViewModel.trendingSeriesState
-                ) {moviesState, seriesState ->
+            ) { moviesState, seriesState ->
                 dataProvider.getTrendingData(
-                    moviesState,seriesState
+                    moviesState, seriesState
                 )
             }.collect { trendingData ->
-                trendingData?.let {
+                trendingData.let {
                     trendingDataAdapter.submitList(trendingData)
                 }
             }
         }
     }
-    fun navigateToMovieDetails(movies: TrendingDataModel.TrendingMovies) {
-        val actionMovies = TrendingFragmentDirections.actionTrendingFragmentToMovieDetailsFragment(moviesId = movies.moviesId)
-        navController.navigate(actionMovies)
+
+    private fun navigateToMovieDetails(movies: TrendingDataModel.TrendingMovies) {
+        val bundle = bundleOf(
+            "moviesId" to movies.moviesId
+        )
+        navController.navigate(R.id.action_trendingFragment_to_movieDetailsFragment, bundle)
     }
-    fun navigateToSeriesDetails(series: TrendingDataModel.TrendingSeries) {
-        val actionSeries = TrendingFragmentDirections.actionTrendingFragmentToSeriesDetailsFragment(seriesId = series.seriesId)
-        navController.navigate(actionSeries)
+
+    private fun navigateToSeriesDetails(series: TrendingDataModel.TrendingSeries) {
+        val bundle = bundleOf(
+            "seriesId" to series.seriesId
+        )
+        navController.navigate(R.id.action_trendingFragment_to_seriesDetailsFragment, bundle)
     }
 
     override fun onSeriesClick(series: TrendingDataModel.TrendingSeries?) {
@@ -92,6 +101,5 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>(), TrendingAdapte
     override fun onMoviesClick(movie: TrendingDataModel.TrendingMovies?) {
         movie?.let { navigateToMovieDetails(movie) }
     }
+
 }
-
-

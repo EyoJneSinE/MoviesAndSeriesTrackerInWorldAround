@@ -1,6 +1,7 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter
 
 interface DisplayItem {
+
     fun type(): Int
 
     companion object {
@@ -11,4 +12,3 @@ interface DisplayItem {
         const val TYPE_TRENDING_HORIZONTAL_VIEW_PAGER = 4
     }
 }
-

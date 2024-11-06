@@ -10,9 +10,12 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.model.
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Constants.POSTER_URL
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 
-class SeriesListAdapter(private val onItemClick: (Series) -> Unit): ListAdapter<Series, SeriesListAdapter.SeriesViewHolder>(SeriesListDiffCallBack()) {
+class SeriesListAdapter(
+    private val onItemClick: (Series) -> Unit
+) : ListAdapter<Series, SeriesListAdapter.SeriesViewHolder>(SeriesListDiffCallBack()) {
 
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesViewHolder {
         val binding = SeriesRecyclerRowBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -26,10 +29,13 @@ class SeriesListAdapter(private val onItemClick: (Series) -> Unit): ListAdapter<
         val series = getItem(position)
         holder.bindSeries(series)
     }
+
     fun setSelectedItemPosition(position: Int) {
         selectedItemPosition = position
     }
-    inner class SeriesViewHolder(private val seriesBinding: SeriesRecyclerRowBinding) : RecyclerView.ViewHolder(seriesBinding.root) {
+
+    inner class SeriesViewHolder(private val seriesBinding: SeriesRecyclerRowBinding) :
+        RecyclerView.ViewHolder(seriesBinding.root) {
         init {
             seriesBinding.root.setOnClickListener {
                 val position = absoluteAdapterPosition
@@ -41,7 +47,7 @@ class SeriesListAdapter(private val onItemClick: (Series) -> Unit): ListAdapter<
             }
         }
 
-        fun bindSeries(series : Series) {
+        fun bindSeries(series: Series) {
             val seriesGenreText = series.topRatedSeriesGenre.joinToString(",\n")
             seriesBinding.apply {
                 seriesGenreTypeTextView.text = seriesGenreText
@@ -51,4 +57,5 @@ class SeriesListAdapter(private val onItemClick: (Series) -> Unit): ListAdapter<
             }
         }
     }
+
 }

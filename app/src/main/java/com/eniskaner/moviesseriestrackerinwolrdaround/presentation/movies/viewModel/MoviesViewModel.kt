@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -16,12 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _stateMovies = MutableStateFlow<MoviesState>(MoviesState())
-    val stateMovies : StateFlow<MoviesState> = _stateMovies
+    private val _stateMovies = MutableStateFlow(MoviesState())
+    val stateMovies = _stateMovies.asStateFlow()
 
-    private var jobMovies : Job? = null
+    private var jobMovies: Job? = null
 
     init {
         getMoviesFromTMBD()
@@ -45,4 +46,5 @@ class MoviesViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
 }

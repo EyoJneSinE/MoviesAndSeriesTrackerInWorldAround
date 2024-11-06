@@ -8,7 +8,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 
 class MovieDetailsCrewViewHolder(private val movieDetailsCrewBinding: MovieDetailsCrewRecyclerRowBinding
 ): RecyclerView.ViewHolder(movieDetailsCrewBinding.root) {
-    fun bindMovieDetailsCast(movieDetailsCastItem: MovieDetails.GetMovieDetailsCrew) {
+    fun bindMovieDetailsCrew(movieDetailsCastItem: MovieDetails.GetMovieDetailsCrew) {
         movieDetailsCrewBinding.apply {
             movieDetailsCrewNameTextView.text = movieDetailsCastItem.movieDetailsCrewName
             movieDetailsCrewJobContentsTextView.text = movieDetailsCastItem.movieDetailsCrewJob

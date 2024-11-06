@@ -1,4 +1,4 @@
-package com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_details
+package com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.series_details
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -56,4 +56,4 @@ data class SeriesDetails(
     val voteAverage: Double?,
     @SerializedName("vote_count")
     val voteCount: Int?
-): Serializable
+) : Serializable

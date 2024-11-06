@@ -32,12 +32,12 @@ class MoviesCrewViewModel @Inject constructor(
         }
     }
 
-    private fun getMovieCrew(imdbId: Int) {
+    fun getMovieCrew(imdbId: Int) {
         jobMovieCrews?.cancel()
         jobMovieCrews = getMovieDetailsCrewUseCase.executeGetCastAndCrewFromTMDB(imdbId).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateMovieCrew.value = MovieDetailState(movieCrew = it.data?.crew ?: emptyList())
+                    _stateMovieCrew.value = MovieDetailState(movieCrew = it.data)
                 }
                 is Resource.Error -> {
                     _stateMovieCrew.value = MovieDetailState(error = it.message ?: "Error!")

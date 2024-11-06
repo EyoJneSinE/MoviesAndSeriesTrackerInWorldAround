@@ -13,8 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_genre.SeriesGenre
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_series.SeriesResult
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.series_genre.SeriesGenre
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.top_rated_series.SeriesResult
 import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentSeriesBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
@@ -25,18 +25,22 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.viewMo
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.viewModel.SeriesSearchViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.viewModel.SeriesViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.viewModel.TopRatedSeriesViewModel
+import com.eniskaner.moviesseriestrackerinwolrdaround.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
+
     private val seriesGenreViewModel: SeriesGenreViewModel by viewModels()
     private val seriesSearchViewModel: SeriesSearchViewModel by viewModels()
     private val seriesViewModel: SeriesViewModel by viewModels()
     private val topRatedSeriesViewModel: TopRatedSeriesViewModel by viewModels()
+
     private val navController: NavController by lazy {
         findNavController()
     }
+
     override fun setBinding(): FragmentSeriesBinding =
         FragmentSeriesBinding.inflate(layoutInflater)
 
@@ -50,7 +54,13 @@ class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
     private fun setupViewsWithSeriesSearch() {
         binding.apply {
             seriesSearchEditText.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     val searchingSeriesText = s.toString()
@@ -80,16 +90,21 @@ class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
             launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     seriesSearchViewModel.apply {
-                        stateSearchSeries.collect{searchingResource ->
-                            val searchingMovieList = searchingResource.searchingSeries.map { searchResult ->
-                                seriesResultToTopRatedSeries(searchResult)
+                        stateSearchSeries.collect { searchingResource ->
+                            val searchingMovieList =
+                                searchingResource.searchingSeries.map { searchResult ->
+                                    seriesResultToTopRatedSeries(searchResult)
+                                }
+                            val results = searchingMovieList.filter {
+                                it.topRatedSeriesTitle.lowercase()
+                                    .contains(search.lowercase().trim(), ignoreCase = true)
                             }
-                            val results = searchingMovieList.filter { it.topRatedSeriesTitle.lowercase().contains(search.lowercase().trim(), ignoreCase = true) }
                             searchingMovieList?.let {
-                                if (search.isNotEmpty() ) {
-                                    binding.seriesRecyclerView.adapter = SeriesListAdapter {searchingSeries ->
-                                        navigateToSeriesDetailsFragment(searchingSeries)
-                                    }.apply { submitList(results) }
+                                if (search.isNotEmpty()) {
+                                    binding.seriesRecyclerView.adapter =
+                                        SeriesListAdapter { searchingSeries ->
+                                            navigateToSeriesDetailsFragment(searchingSeries)
+                                        }.apply { submitList(results) }
                                 } else {
                                     observeSeriesViewModel()
                                 }
@@ -102,55 +117,56 @@ class SeriesFragment : BaseFragment<FragmentSeriesBinding>() {
     }
 
     private fun observeSeriesViewModel() {
-        viewLifecycleOwner.lifecycleScope.apply {
+        launchAndRepeatWithViewLifecycle {
             launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                seriesViewModel.apply {
+                    stateSeries.collect { resource ->
 
-                    seriesViewModel.apply {
-                        stateSeries.collect { resource ->
+                        val topRatedSeriesList = resource.series.map { seriesResult ->
+                            seriesResultToTopRatedSeries(seriesResult)
+                        }
 
-                            val topRatedSeriesList = resource.series.map { seriesResult ->
-                                seriesResultToTopRatedSeries(seriesResult)
-                            }
-                            topRatedSeriesList?.let {
-                                binding.seriesRecyclerView.adapter = SeriesListAdapter{series ->
-                                    navigateToSeriesDetailsFragment(series)
-                                }.apply { submitList(topRatedSeriesList) }
-                            }
+                        topRatedSeriesList.let {
+                            binding.seriesRecyclerView.adapter = SeriesListAdapter { series ->
+                                navigateToSeriesDetailsFragment(series)
+                            }.apply { submitList(topRatedSeriesList) }
                         }
                     }
                 }
             }
         }
     }
+
     private fun observeSeriesGenreViewModel() {
-        viewLifecycleOwner.lifecycleScope.apply {
+        launchAndRepeatWithViewLifecycle {
             launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    seriesGenreViewModel.apply {
-                        val genreResource = stateSeriesGenre.value
-                        if (genreResource != null && genreResource.seriesGenre.isNotEmpty()) {
-                            val genreMovieList = genreResource.seriesGenre.map {
-                                seriesGenresToTopRatedSeries(it)
-                            }
+                seriesGenreViewModel.apply {
+                    val genreResource = stateSeriesGenre.value
+                    if (genreResource != null && genreResource.seriesGenre.isNotEmpty()) {
+                        val genreMovieList = genreResource.seriesGenre.map {
+                            seriesGenresToTopRatedSeries(it)
                         }
                     }
                 }
             }
         }
     }
+
     private fun seriesGenresToTopRatedSeries(seriesGenre: SeriesGenre): SeriesGenre {
         return SeriesGenre(
             id = seriesGenre.id ?: 0,
             name = seriesGenre.name ?: ""
         )
     }
+
     private fun seriesResultToTopRatedSeries(seriesResult: SeriesResult): TopRatedSeries.Series {
 
-        val seriesGenre = seriesGenreViewModel.stateSeriesGenre.value.seriesGenre.filter { moviesGenre ->
-            seriesResult.genreIds.any { it == moviesGenre.id }
-        }
-        val seriesGenreName =  seriesGenre.map{moviesGenreName ->
+        val seriesGenre =
+            seriesGenreViewModel.stateSeriesGenre.value.seriesGenre.filter { moviesGenre ->
+                seriesResult.genreIds.any { it == moviesGenre.id }
+            }
+
+        val seriesGenreName = seriesGenre.map { moviesGenreName ->
             moviesGenreName.name
         }
 

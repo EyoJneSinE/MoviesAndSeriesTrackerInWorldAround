@@ -10,8 +10,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 class MoviesAndSeriesViewHolder(
     private val binding: TrendingMoviesAndSeriesElementsRowBinding,
     private val trendingAdapterListener: TrendingAdapterListener
-): RecyclerView.ViewHolder(binding.root)  {
-
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bindTrendingMoviesAndSeries(trendingMoviesAndSeriesItem: TrendingDataModel.TrendingMoviesAndSeries) {
         val movie = trendingMoviesAndSeriesItem.movie
@@ -37,9 +36,3 @@ class MoviesAndSeriesViewHolder(
         }
     }
 }
-
-//viewbinding
-//gridview
-//listadapter
-//type'ların tekillestirmesi
-//viewholder'ların düzenlenmesi

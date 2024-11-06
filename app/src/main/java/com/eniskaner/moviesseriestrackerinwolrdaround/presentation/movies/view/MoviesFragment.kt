@@ -3,13 +3,8 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,8 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.MoviesResult
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_genre.MoviesGenre
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies.MoviesResult
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_genre.MoviesGenre
 import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.databinding.FragmentMoviesBinding
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.base.BaseFragment
@@ -29,10 +24,7 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewMo
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.MoviesSearchViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.MoviesViewModel
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.viewModel.NowPlayingMoviesViewModel
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.series.model.TopRatedSeries
-import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

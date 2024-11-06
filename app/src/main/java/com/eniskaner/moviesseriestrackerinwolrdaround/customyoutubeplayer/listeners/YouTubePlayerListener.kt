@@ -26,7 +26,10 @@ interface YouTubePlayerListener {
      * Called every time the speed of the playback changes. Check [PlayerConstants.PlaybackRate] to see all the possible values.
      * @param playbackRate a state from [PlayerConstants.PlaybackRate]
      */
-    fun onPlaybackRateChange(youTubePlayer: YouTubePlayer, playbackRate: PlayerConstants.PlaybackRate)
+    fun onPlaybackRateChange(
+        youTubePlayer: YouTubePlayer,
+        playbackRate: PlayerConstants.PlaybackRate
+    )
 
     /**
      * Called when an error occurs in the player. Check [PlayerConstants.PlayerError] to see all the possible values.

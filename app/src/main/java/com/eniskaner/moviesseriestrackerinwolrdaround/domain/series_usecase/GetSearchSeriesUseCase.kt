@@ -1,8 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.series_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.GetMovieFromId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_series.TopRatedTvFromTMDB
-import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.top_rated_series.TopRatedTvFromTMDB
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.SeriesRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +13,7 @@ class GetSearchSeriesUseCase @Inject constructor(
     private val seriesSearchRepository: SeriesRepository
 ) {
 
-    fun executeSearchSerieFromTMDB(search: String) : Flow<Resource<TopRatedTvFromTMDB>> = flow {
+    fun executeSearchSerieFromTMDB(search: String): Flow<Resource<TopRatedTvFromTMDB>> = flow {
         try {
             emit(Resource.Loading())
             val searchSeriesListFromTMDB = seriesSearchRepository.searchSerieFromTMDB(search)
@@ -30,4 +28,5 @@ class GetSearchSeriesUseCase @Inject constructor(
             emit(Resource.Error(message = "Internet connection error!!!"))
         }
     }
+
 }

@@ -19,12 +19,15 @@ interface YouTubePlayer {
     fun cueVideo(videoId: String, startSeconds: Float)
 
     fun play()
+
     fun pause()
 
     /** If the player is playing a playlist, play the next video. */
     fun nextVideo()
+
     /** If the player is playing a playlist, play the previous video. */
     fun previousVideo()
+
     /** If the player is playing a playlist, play the video at position [index]. */
     fun playVideoAt(index: Int)
 
@@ -35,6 +38,7 @@ interface YouTubePlayer {
     fun setShuffle(shuffle: Boolean)
 
     fun mute()
+
     fun unMute()
 
     /**
@@ -60,5 +64,6 @@ interface YouTubePlayer {
     fun setSize(screenWidth: Int, screenHeight: Int)
 
     fun addListener(listener: YouTubePlayerListener): Boolean
+
     fun removeListener(listener: YouTubePlayerListener): Boolean
 }

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -17,12 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesSearchViewModel @Inject constructor(
     private val getSearchMoviesUseCase: GetSearchMoviesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _stateSearchMovies = MutableStateFlow<MoviesState>(MoviesState())
-    val stateSearchMovies : StateFlow<MoviesState> = _stateSearchMovies
+    private val _stateSearchMovies = MutableStateFlow(MoviesState())
+    val stateSearchMovies = _stateSearchMovies.asStateFlow()
 
-    private var jobSearchMovies : Job? = null
+    private var jobSearchMovies: Job? = null
 
     init {
         getSearchMoviesFromTMDB(_stateSearchMovies.value.search)
@@ -31,9 +32,12 @@ class MoviesSearchViewModel @Inject constructor(
     private fun getSearchMoviesFromTMDB(search: String) {
         jobSearchMovies?.cancel()
         jobSearchMovies = getSearchMoviesUseCase.executeSearchMovieFromTMDB(search).onEach {
+
             when (it) {
+
                 is Resource.Success -> {
-                    _stateSearchMovies.value = MoviesState(moviesSearching = it.data?.movies ?: emptyList())
+                    _stateSearchMovies.value =
+                        MoviesState(moviesSearching = it.data?.movies ?: emptyList())
                 }
 
                 is Resource.Error -> {
@@ -43,14 +47,18 @@ class MoviesSearchViewModel @Inject constructor(
                 is Resource.Loading -> {
                     _stateSearchMovies.value = MoviesState(isLoading = true)
                 }
+
             }
+
         }.launchIn(viewModelScope)
     }
-    fun onEvent(event : MoviesEvent) {
-        when(event) {
+
+    fun onEvent(event: MoviesEvent) {
+        when (event) {
             is MoviesEvent.SearchMovies -> {
                 getSearchMoviesFromTMDB(event.searchMovies)
             }
         }
     }
+
 }

@@ -24,33 +24,32 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMovieApi() : MovieAPI {
-        return Retrofit.Builder()
-            .baseUrl(THE_MOVIEDB_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(MovieAPI::class.java)
-    }
+    fun provideMovieApi(): MovieAPI = Retrofit.Builder()
+        .baseUrl(THE_MOVIEDB_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(MovieAPI::class.java)
 
     @Singleton
     @Provides
-    fun provideMovieRepository(movieAPI: MovieAPI) : MovieRepository {
-        return MovieRepositoryImpl(movieApi = movieAPI)
-    }
+    fun provideMovieRepository(
+        movieAPI: MovieAPI
+    ): MovieRepository = MovieRepositoryImpl(movieApi = movieAPI)
+
 
     @Singleton
     @Provides
-    fun provideSeriesApi() : SeriesAPI {
-        return Retrofit.Builder()
-            .baseUrl(THE_MOVIEDB_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(SeriesAPI::class.java)
-    }
+    fun provideSeriesApi(): SeriesAPI = Retrofit.Builder()
+        .baseUrl(THE_MOVIEDB_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(SeriesAPI::class.java)
 
     @Singleton
     @Provides
-    fun provideSeriesRepository(seriesAPI: SeriesAPI) : SeriesRepository {
+    fun provideSeriesRepository(
+        seriesAPI: SeriesAPI
+    ): SeriesRepository {
         return SeriesRepositoryImpl(seriesAPI = seriesAPI)
     }
 }
