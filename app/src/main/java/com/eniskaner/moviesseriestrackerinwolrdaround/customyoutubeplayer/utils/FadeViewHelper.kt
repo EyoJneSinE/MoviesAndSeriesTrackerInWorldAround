@@ -6,7 +6,10 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.listen
 import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.listeners.YouTubePlayer
 import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.listeners.YouTubePlayerListener
 
-class FadeViewHelper(val targetView: View) : YouTubePlayerListener {
+class FadeViewHelper(
+    val targetView: View
+) : YouTubePlayerListener {
+
     companion object {
         const val DEFAULT_ANIMATION_DURATION = 300L
         const val DEFAULT_FADE_OUT_DELAY = 3000L
@@ -86,18 +89,30 @@ class FadeViewHelper(val targetView: View) : YouTubePlayerListener {
                 else
                     targetView.handler?.removeCallbacks(fadeOut)
             }
+
             PlayerConstants.PlayerState.BUFFERING, PlayerConstants.PlayerState.UNSTARTED -> {
                 fade(1f)
                 canFade = false
             }
+
             PlayerConstants.PlayerState.UNKNOWN -> fade(1f)
             PlayerConstants.PlayerState.ENDED -> fade(1f)
         }
     }
 
     override fun onReady(youTubePlayer: YouTubePlayer) {}
-    override fun onPlaybackQualityChange(youTubePlayer: YouTubePlayer, playbackQuality: PlayerConstants.PlaybackQuality) {}
-    override fun onPlaybackRateChange(youTubePlayer: YouTubePlayer, playbackRate: PlayerConstants.PlaybackRate) {}
+    override fun onPlaybackQualityChange(
+        youTubePlayer: YouTubePlayer,
+        playbackQuality: PlayerConstants.PlaybackQuality
+    ) {
+    }
+
+    override fun onPlaybackRateChange(
+        youTubePlayer: YouTubePlayer,
+        playbackRate: PlayerConstants.PlaybackRate
+    ) {
+    }
+
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {}
     override fun onApiChange(youTubePlayer: YouTubePlayer) {}
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {}

@@ -25,5 +25,4 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         // use this method in child activity
     }
 
-
 }

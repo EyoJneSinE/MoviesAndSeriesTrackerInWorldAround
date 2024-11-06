@@ -52,7 +52,12 @@ class YouTubePlayerSeekBar(context: Context, attrs: AttributeSet? = null) :
 
         videoCurrentTimeTextView.text = resources.getString(R.string.ayp_null_time)
         videoCurrentTimeTextView.setPadding(padding, padding, 0, padding)
-        videoCurrentTimeTextView.setTextColor(ContextCompat.getColor(context, android.R.color.white))
+        videoCurrentTimeTextView.setTextColor(
+            ContextCompat.getColor(
+                context,
+                android.R.color.white
+            )
+        )
         videoCurrentTimeTextView.gravity = Gravity.CENTER_VERTICAL
 
         videoDurationTextView.text = resources.getString(R.string.ayp_null_time)

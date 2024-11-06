@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -16,11 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesGenreViewModel @Inject constructor(
     private val getMoviesGenreUseCase: GetMoviesGenreUseCase
-): ViewModel() {
-    private val _stateMoviesGenre = MutableStateFlow<MoviesState>(MoviesState())
-    val stateMoviesGenre : StateFlow<MoviesState> = _stateMoviesGenre
+) : ViewModel() {
 
-    private var jobMovieGenres : Job? = null
+    private val _stateMoviesGenre = MutableStateFlow(MoviesState())
+    val stateMoviesGenre = _stateMoviesGenre.asStateFlow()
+
+    private var jobMovieGenres: Job? = null
 
     init {
         getGenreMoviesFromTMDB()
@@ -29,17 +31,23 @@ class MoviesGenreViewModel @Inject constructor(
     private fun getGenreMoviesFromTMDB() {
         jobMovieGenres?.cancel()
         jobMovieGenres = getMoviesGenreUseCase.executeGenreMovieFromTMDB().onEach {
+
             when (it) {
                 is Resource.Success -> {
-                    _stateMoviesGenre.value = MoviesState(moviesGenre = it.data?.genres ?: emptyList())
+                    _stateMoviesGenre.value =
+                        MoviesState(moviesGenre = it.data?.genres ?: emptyList())
                 }
+
                 is Resource.Error -> {
                     _stateMoviesGenre.value = MoviesState(error = it.message ?: "Error!")
                 }
+
                 is Resource.Loading -> {
                     _stateMoviesGenre.value = MoviesState(isLoading = true)
                 }
             }
+
         }.launchIn(viewModelScope)
     }
+
 }

@@ -21,8 +21,7 @@ internal class PlaybackResumer : AbstractYouTubePlayerListener() {
         val videoId = currentVideoId ?: return
         if (isPlaying && error == PlayerConstants.PlayerError.HTML_5_PLAYER) {
             youTubePlayer.loadOrCueVideo(canLoad, videoId, currentSecond)
-        }
-        else if (!isPlaying && error == PlayerConstants.PlayerError.HTML_5_PLAYER) {
+        } else if (!isPlaying && error == PlayerConstants.PlayerError.HTML_5_PLAYER) {
             youTubePlayer.cueVideo(videoId, currentSecond)
         }
 
@@ -31,9 +30,11 @@ internal class PlaybackResumer : AbstractYouTubePlayerListener() {
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
         when (state) {
-            PlayerConstants.PlayerState.ENDED, PlayerConstants.PlayerState.PAUSED -> isPlaying = false
+            PlayerConstants.PlayerState.ENDED, PlayerConstants.PlayerState.PAUSED -> isPlaying =
+                false
+
             PlayerConstants.PlayerState.PLAYING -> isPlaying = true
-            else -> { }
+            else -> {}
         }
     }
 

@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -16,12 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class TopRatedSeriesViewModel @Inject constructor(
     private val getTopRatedSeriesUseCase: GetTopRatedSeriesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _stateTopRatedSeries = MutableStateFlow<SeriesState>(SeriesState())
-    val stateTopRatedSeries : StateFlow<SeriesState> = _stateTopRatedSeries
+    private val _stateTopRatedSeries = MutableStateFlow(SeriesState())
+    val stateTopRatedSeries = _stateTopRatedSeries.asStateFlow()
 
-    private var jobTopRatedSeries : Job? = null
+    private var jobTopRatedSeries: Job? = null
 
     init {
         getTopRatedSeries()
@@ -32,7 +33,8 @@ class TopRatedSeriesViewModel @Inject constructor(
         jobTopRatedSeries = getTopRatedSeriesUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateTopRatedSeries.value = SeriesState(topRatedSeries = it.data?.series ?: emptyList())
+                    _stateTopRatedSeries.value =
+                        SeriesState(topRatedSeries = it.data?.series ?: emptyList())
                 }
 
                 is Resource.Error -> {

@@ -1,6 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.CastingForMovieFromTMDB
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_cast.CastingForMovieFromTMDB
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetMovieDetailsCastAndCrewUseCase @Inject constructor(
     private val moviesCastAndCrewRepository: MovieRepository
 ) {
-    fun executeGetCastAndCrewFromTMDB(movieId: Int) : Flow<Resource<CastingForMovieFromTMDB>> = flow {
+    fun executeGetCastAndCrewFromTMDB(movieId: Int): Flow<Resource<CastingForMovieFromTMDB>> = flow {
         try {
             emit(Resource.Loading())
             val getCastFromTMDB = moviesCastAndCrewRepository.getCastFromTMDB(movieId)
@@ -27,4 +27,5 @@ class GetMovieDetailsCastAndCrewUseCase @Inject constructor(
             emit(Resource.Error(message = "Internet connection error!!!"))
         }
     }
+
 }

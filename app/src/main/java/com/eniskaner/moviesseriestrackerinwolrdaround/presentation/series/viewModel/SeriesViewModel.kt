@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -18,12 +19,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SeriesViewModel @Inject constructor(
     private val getSeriesUseCase: GetSeriesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _stateSeries = MutableStateFlow<SeriesState>(SeriesState())
-    val stateSeries : StateFlow<SeriesState> = _stateSeries
+    private val _stateSeries = MutableStateFlow(SeriesState())
+    val stateSeries = _stateSeries.asStateFlow()
 
-    private var jobSeries : Job? = null
+    private var jobSeries: Job? = null
 
     init {
         getSeries()
@@ -47,4 +48,5 @@ class SeriesViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
 }

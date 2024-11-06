@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -16,11 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SeriesGenreViewModel @Inject constructor(
     private val getSeriesGenreUseCase: GetSeriesGenreUseCase
-): ViewModel() {
-    private val _stateSeriesGenre = MutableStateFlow<SeriesState>(SeriesState())
-    val stateSeriesGenre : StateFlow<SeriesState> = _stateSeriesGenre
+) : ViewModel() {
 
-    private var jobSerieGenres : Job? = null
+    private val _stateSeriesGenre = MutableStateFlow(SeriesState())
+    val stateSeriesGenre = _stateSeriesGenre.asStateFlow()
+
+    private var jobSerieGenres: Job? = null
 
     init {
         getSeriesGenre()
@@ -31,15 +33,19 @@ class SeriesGenreViewModel @Inject constructor(
         jobSerieGenres = getSeriesGenreUseCase.executeGenreSeriesFromTMDB().onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateSeriesGenre.value = SeriesState(seriesGenre = it.data?.genres ?: emptyList())
+                    _stateSeriesGenre.value =
+                        SeriesState(seriesGenre = it.data?.genres ?: emptyList())
                 }
+
                 is Resource.Error -> {
                     _stateSeriesGenre.value = SeriesState(error = it.message ?: "Error!")
                 }
+
                 is Resource.Loading -> {
                     _stateSeriesGenre.value = SeriesState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
     }
+
 }

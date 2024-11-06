@@ -1,6 +1,8 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.presentation
 
 import android.os.Bundle
+import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,32 +17,31 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainActivity : AppCompatActivity() {
+
     private lateinit var navController: NavController
 
-    override fun onViewReady(savedInstanceState: Bundle?) {
-        super.onViewReady(savedInstanceState)
+    lateinit var binding: ActivityMainBinding
 
-        if (savedInstanceState == null) {
-            setupBottomNavigationBar()
-        }
-    }
-    /*override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.masNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        setupWithNavController(bottomNavigationView,navController)
-    }*/
+        setupWithNavController(bottomNavigationView, navController)
 
-    override fun setBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setupBottomNavigationBar()
+    }
 
     private fun setupBottomNavigationBar() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.masNavHostFragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.masNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -52,9 +53,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.toolbar.title = fragmentTitles[navController.currentDestination?.id]
 
-        navController.addOnDestinationChangedListener{_, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.title = fragmentTitles[destination.id]
             binding.toolbar.navigationIcon = null
         }
+    }
+
+    fun setFullscreenFlags() {
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        )
+    }
+
+    fun changeFullScreenFlags(isFullSize: Boolean) {
+        if (isFullSize) window.addFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        ) else window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
     }
 }

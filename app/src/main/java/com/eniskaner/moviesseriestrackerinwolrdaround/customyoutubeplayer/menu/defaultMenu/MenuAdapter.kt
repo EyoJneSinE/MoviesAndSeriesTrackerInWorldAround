@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.menu.MenuItem
 
-internal class MenuAdapter(private val context: Context, private val menuItems: List<MenuItem>) :
-    RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+internal class MenuAdapter(
+    private val context: Context,
+    private val menuItems: List<MenuItem>
+) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ayp_menu_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.ayp_menu_item, parent, false)
         return ViewHolder(view)
     }
 

@@ -1,4 +1,4 @@
-package com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast
+package com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_cast
 
 data class CastingForMovieFromTMDB(
     val cast: List<MovieCast>,

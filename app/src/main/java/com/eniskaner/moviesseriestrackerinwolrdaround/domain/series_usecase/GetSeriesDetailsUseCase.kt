@@ -1,8 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.series_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movie_details.GetMovieDetailsFromId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_details.SeriesDetails
-import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.series_details.SeriesDetails
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.SeriesRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -14,10 +12,11 @@ import javax.inject.Inject
 class GetSeriesDetailsUseCase @Inject constructor(
     private val seriesDetailsRepository: SeriesRepository
 ) {
-    fun executeGetSeriesDetailsFromTMDB(seriesId: Int) : Flow<Resource<SeriesDetails>> = flow {
+    fun executeGetSeriesDetailsFromTMDB(seriesId: Int): Flow<Resource<SeriesDetails>> = flow {
         try {
             emit(Resource.Loading())
-            val getSeriesDetailsFromTMDB = seriesDetailsRepository.getSeriesDetailsFromTMDB(seriesId)
+            val getSeriesDetailsFromTMDB =
+                seriesDetailsRepository.getSeriesDetailsFromTMDB(seriesId)
             if (getSeriesDetailsFromTMDB.seasons.isNotEmpty() || getSeriesDetailsFromTMDB.genres.isNotEmpty() || getSeriesDetailsFromTMDB.languages.isNotEmpty()) {
                 emit(Resource.Success(getSeriesDetailsFromTMDB))
             } else {

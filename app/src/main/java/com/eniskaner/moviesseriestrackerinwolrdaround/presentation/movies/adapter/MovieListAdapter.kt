@@ -10,8 +10,12 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.movies.model.
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Constants
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.load
 
-class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(MovieListDiffCallBack()) {
+class MovieListAdapter(
+    private val onItemClick: (Movies) -> Unit
+) : ListAdapter<Movies, MovieListAdapter.MovieViewHolder>(MovieListDiffCallBack()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+
         val binding = MoviesRecyclerRowBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -19,12 +23,14 @@ class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<
         )
         return MovieViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
         holder.bindMovie(movie)
     }
 
-    inner class MovieViewHolder(private  val movieBinding: MoviesRecyclerRowBinding): RecyclerView.ViewHolder(movieBinding.root) {
+    inner class MovieViewHolder(private val movieBinding: MoviesRecyclerRowBinding) :
+        RecyclerView.ViewHolder(movieBinding.root) {
         init {
             movieBinding.root.setOnClickListener {
                 val position = absoluteAdapterPosition
@@ -34,6 +40,7 @@ class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<
                 }
             }
         }
+
         fun bindMovie(movie: NowPlayingMovies.Movies) {
             val genreText = movie.nowPlayingMoviesGenre.joinToString(",\n")
             movieBinding.apply {
@@ -45,4 +52,3 @@ class MovieListAdapter(private val onItemClick: (Movies) -> Unit) : ListAdapter<
         }
     }
 }
-

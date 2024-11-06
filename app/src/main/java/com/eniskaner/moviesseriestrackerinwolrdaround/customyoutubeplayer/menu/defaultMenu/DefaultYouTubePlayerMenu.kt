@@ -13,7 +13,10 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.R
 import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.menu.MenuItem
 import com.eniskaner.moviesseriestrackerinwolrdaround.customyoutubeplayer.menu.YouTubePlayerMenu
 
-internal class DefaultYouTubePlayerMenu(private val context: Context) : YouTubePlayerMenu {
+internal class DefaultYouTubePlayerMenu(
+    private val context: Context
+) : YouTubePlayerMenu {
+
     private val menuItems = ArrayList<MenuItem>()
     private var popupWindow: PopupWindow? = null
 

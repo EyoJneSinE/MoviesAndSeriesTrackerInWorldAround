@@ -1,6 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_genre.GenresFromTMDB
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_genre.GenresFromTMDB
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetMoviesGenreUseCase @Inject constructor(
     private val movieDetailsGenreRepository: MovieRepository
 ) {
-    fun executeGenreMovieFromTMDB() : Flow<Resource<GenresFromTMDB>> = flow {
+    fun executeGenreMovieFromTMDB(): Flow<Resource<GenresFromTMDB>> = flow {
         try {
             emit(Resource.Loading())
             val genreListFromTMDB = movieDetailsGenreRepository.genreMovieFromTMDB()

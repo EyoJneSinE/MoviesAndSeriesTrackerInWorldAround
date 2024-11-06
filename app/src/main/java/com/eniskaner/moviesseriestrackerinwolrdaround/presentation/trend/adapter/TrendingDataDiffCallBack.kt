@@ -10,12 +10,15 @@ class TrendingDataDiffCallback : DiffUtil.ItemCallback<TrendingDataModel>() {
             (oldItem is TrendingDataModel.TrendingHorizontalViewPager && newItem is TrendingDataModel.TrendingHorizontalViewPager) -> {
                 oldItem == newItem
             }
+
             (oldItem is TrendingDataModel.TrendingMoviesAndSeries && newItem is TrendingDataModel.TrendingMoviesAndSeries) -> {
                 oldItem == newItem
             }
+
             else -> false
         }
     }
+
     override fun areContentsTheSame(
         oldItem: TrendingDataModel,
         newItem: TrendingDataModel
