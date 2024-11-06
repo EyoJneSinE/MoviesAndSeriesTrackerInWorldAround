@@ -7,7 +7,8 @@ import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_MOVIES_AND_SERIES
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapter.DisplayItem.Companion.TYPE_TRENDING_SERIES
 
-sealed class TrendingDataModel: DisplayItem {
+sealed class TrendingDataModel : DisplayItem {
+
     data class TrendingMoviesAndSeries(
         val movie: TrendingMovies?,
         val series: TrendingSeries?,
@@ -22,11 +23,12 @@ sealed class TrendingDataModel: DisplayItem {
         val moviesTitle: String,
         val moviesAirDate: String,
         val moviesId: Int
-        ) : TrendingDataModel(), DisplayItem {
+    ) : TrendingDataModel(), DisplayItem {
         override fun type(): Int {
             return TYPE_TRENDING_MOVIE
         }
     }
+
     data class TrendingSeries(
         val seriesPoster: String,
         val seriesTitle: String,
@@ -37,6 +39,7 @@ sealed class TrendingDataModel: DisplayItem {
             return TYPE_TRENDING_SERIES
         }
     }
+
     data class TrendingHorizontal(
         var trendingHorizontal: List<TrendingHorizontalViewPager> = emptyList()
     ) : TrendingDataModel(), DisplayItem {

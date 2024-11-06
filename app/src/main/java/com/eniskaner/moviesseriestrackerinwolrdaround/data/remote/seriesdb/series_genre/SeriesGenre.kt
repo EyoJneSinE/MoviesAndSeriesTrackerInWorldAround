@@ -1,4 +1,4 @@
-package com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_genre
+package com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.series_genre
 
 data class SeriesGenre(
     val id: Int?,

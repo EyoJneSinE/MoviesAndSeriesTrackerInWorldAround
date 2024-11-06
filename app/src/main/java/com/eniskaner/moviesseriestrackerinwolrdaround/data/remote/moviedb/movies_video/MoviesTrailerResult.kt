@@ -1,4 +1,4 @@
-package com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_video
+package com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_video
 
 import com.google.gson.annotations.SerializedName
 

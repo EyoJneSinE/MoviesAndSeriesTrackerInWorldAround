@@ -1,15 +1,18 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.data.repo
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movie_details.GetMovieDetailsFromId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.GetMovieFromId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_cast.CastingForMovieFromTMDB
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_genre.GenresFromTMDB
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_video.GetTrailerFromMovieId
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movie_details.GetMovieDetailsFromId
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies.GetMovieFromId
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_cast.CastingForMovieFromTMDB
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_genre.GenresFromTMDB
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies_video.GetTrailerFromMovieId
 import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.MovieAPI
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(private val movieApi: MovieAPI): MovieRepository {
+class MovieRepositoryImpl @Inject constructor(
+    private val movieApi: MovieAPI
+) : MovieRepository {
+
     override suspend fun getMoviesFromTMDB(): GetMovieFromId {
         return movieApi.getMoviesFromTMDB()
     }

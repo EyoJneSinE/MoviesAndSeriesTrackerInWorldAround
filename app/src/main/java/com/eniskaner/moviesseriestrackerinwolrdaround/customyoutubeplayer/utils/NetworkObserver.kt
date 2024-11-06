@@ -39,10 +39,10 @@ internal class NetworkObserver(private val context: Context) {
         // Min API for `unregisterNetworkCallback` is L, but we use `registerDefaultNetworkCallback` only for N and above.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val callback = networkCallback ?: return
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             connectivityManager.unregisterNetworkCallback(callback)
-        }
-        else {
+        } else {
             val receiver = networkBroadcastReceiver ?: return
             runCatching { context.unregisterReceiver(receiver) }
         }
@@ -72,7 +72,8 @@ internal class NetworkObserver(private val context: Context) {
         }
         networkCallback = callback
 
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerDefaultNetworkCallback(callback)
     }
 
@@ -81,7 +82,10 @@ internal class NetworkObserver(private val context: Context) {
             onNetworkAvailable = { listeners.forEach { it.onNetworkAvailable() } },
             onNetworkUnavailable = { listeners.forEach { it.onNetworkUnavailable() } },
         )
-        context.registerReceiver(networkBroadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        context.registerReceiver(
+            networkBroadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
     }
 }
 
@@ -94,18 +98,20 @@ private class NetworkBroadcastReceiver(
     override fun onReceive(context: Context, intent: Intent) {
         if (isConnectedToInternet(context)) {
             onNetworkAvailable()
-        }
-        else {
+        } else {
             onNetworkUnavailable()
         }
     }
 }
 
 private fun isConnectedToInternet(context: Context): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork) ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                ?: return false
         networkCapabilities.isConnectedToInternet()
     } else {
         val networkInfo = connectivityManager.activeNetworkInfo

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -17,12 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SeriesSearchViewModel @Inject constructor(
     private val getSearchSeriesUseCase: GetSearchSeriesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _stateSearchSeries = MutableStateFlow<SeriesState>(SeriesState())
-    val stateSearchSeries : StateFlow<SeriesState> = _stateSearchSeries
+    private val _stateSearchSeries = MutableStateFlow(SeriesState())
+    val stateSearchSeries = _stateSearchSeries.asStateFlow()
 
-    private var jobSearchSeries : Job? = null
+    private var jobSearchSeries: Job? = null
 
     init {
         getSearchSeries(_stateSearchSeries.value.search)
@@ -33,7 +34,8 @@ class SeriesSearchViewModel @Inject constructor(
         jobSearchSeries = getSearchSeriesUseCase.executeSearchSerieFromTMDB(search).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _stateSearchSeries.value = SeriesState(searchingSeries = it.data?.series ?: emptyList())
+                    _stateSearchSeries.value =
+                        SeriesState(searchingSeries = it.data?.series ?: emptyList())
                 }
 
                 is Resource.Error -> {
@@ -46,11 +48,13 @@ class SeriesSearchViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-    fun onEvent(eventSeries : SeriesEvent) {
-        when(eventSeries) {
+
+    fun onEvent(eventSeries: SeriesEvent) {
+        when (eventSeries) {
             is SeriesEvent.SearchSeries -> {
                 getSearchSeries(eventSeries.searchSeries)
             }
         }
     }
+
 }

@@ -3,5 +3,6 @@ package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.adapte
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model.TrendingDataModel
 
 interface OnClickListener {
+
     fun onItemClick(item: TrendingDataModel)
 }

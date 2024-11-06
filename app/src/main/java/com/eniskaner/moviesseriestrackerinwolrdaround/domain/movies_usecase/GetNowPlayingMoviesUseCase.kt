@@ -1,6 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.movies_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.GetMovieFromId
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies.GetMovieFromId
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetNowPlayingMoviesUseCase @Inject constructor(
     private val nowPlayingMovieRepository: MovieRepository
 ) {
-    fun executeGetNowPlayingMoviesFromTMDB() : Flow<Resource<GetMovieFromId>> = flow {
+    fun executeGetNowPlayingMoviesFromTMDB(): Flow<Resource<GetMovieFromId>> = flow {
         try {
             emit(Resource.Loading())
             val nowPlayingListFromTMDB = nowPlayingMovieRepository.getNowPlayingMoviesFromTMDB()

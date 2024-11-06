@@ -1,8 +1,6 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.domain.series_usecase
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies_video.GetTrailerFromMovieId
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.series_video.GetSeriesTrailerFromTMDB
-import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.MovieRepository
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.series_video.GetSeriesTrailerFromTMDB
 import com.eniskaner.moviesseriestrackerinwolrdaround.domain.repo.SeriesRepository
 import com.eniskaner.moviesseriestrackerinwolrdaround.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +12,8 @@ import javax.inject.Inject
 class GetSeriesDetailsVideosUseCase @Inject constructor(
     private val seriesDetailsVideoRepository: SeriesRepository
 ) {
-    fun executeGetSeriesVideosFromTMDB(seriesId: Int) : Flow<Resource<GetSeriesTrailerFromTMDB>> = flow {
+
+    fun executeGetSeriesVideosFromTMDB(seriesId: Int): Flow<Resource<GetSeriesTrailerFromTMDB>> = flow {
         try {
             emit(Resource.Loading())
             val getSeriesTrailerFromTMDB = seriesDetailsVideoRepository.getTvVideosFromTMDB(seriesId)
@@ -29,4 +28,5 @@ class GetSeriesDetailsVideosUseCase @Inject constructor(
             emit(Resource.Error(message = "Internet connection error!!!"))
         }
     }
+
 }

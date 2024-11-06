@@ -1,7 +1,7 @@
 package com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.model
 
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.moviedb.movies.MoviesResult
-import com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_series.SeriesResult
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.moviedb.movies.MoviesResult
+import com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.top_rated_series.SeriesResult
 import com.eniskaner.moviesseriestrackerinwolrdaround.presentation.trend.state.TrendingState
 import javax.inject.Inject
 

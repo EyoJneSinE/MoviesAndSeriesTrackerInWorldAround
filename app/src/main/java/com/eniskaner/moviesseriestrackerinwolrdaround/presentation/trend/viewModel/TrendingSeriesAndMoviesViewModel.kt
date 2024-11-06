@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -19,17 +20,17 @@ import javax.inject.Inject
 class TrendingSeriesAndMoviesViewModel @Inject constructor(
     private val getNowPlayingMoviesForTrendingUseCase: GetNowPlayingMoviesUseCase,
     private val getTopRatedSeriesForTrendingUseCase: GetTopRatedSeriesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _trendingMoviesState = MutableStateFlow<TrendingState>(TrendingState())
-    val trendingMoviesState : StateFlow<TrendingState> = _trendingMoviesState
+    private val _trendingMoviesState = MutableStateFlow(TrendingState())
+    val trendingMoviesState = _trendingMoviesState.asStateFlow()
 
-    private var jobTrendingMovies : Job? = null
+    private var jobTrendingMovies: Job? = null
 
-    private val _trendingSeriesState = MutableStateFlow<TrendingState>(TrendingState())
-    val trendingSeriesState : StateFlow<TrendingState> = _trendingSeriesState
+    private val _trendingSeriesState = MutableStateFlow(TrendingState())
+    val trendingSeriesState = _trendingSeriesState.asStateFlow()
 
-    private var jobTrendingSeries : Job? = null
+    private var jobTrendingSeries: Job? = null
 
     init {
         getTrendingMovies()
@@ -38,42 +39,44 @@ class TrendingSeriesAndMoviesViewModel @Inject constructor(
 
     private fun getTrendingMovies() {
         jobTrendingMovies?.cancel()
-        jobTrendingMovies = getNowPlayingMoviesForTrendingUseCase.executeGetNowPlayingMoviesFromTMDB().onEach {
-            when (it) {
-                is Resource.Success -> {
-                    _trendingMoviesState.value = TrendingState(trendingMovies = it.data?.movies ?: emptyList())
+        jobTrendingMovies =
+            getNowPlayingMoviesForTrendingUseCase.executeGetNowPlayingMoviesFromTMDB().onEach {
+                when (it) {
+                    is Resource.Success -> {
+                        _trendingMoviesState.value =
+                            TrendingState(trendingMovies = it.data?.movies ?: emptyList())
+                    }
+
+                    is Resource.Error -> {
+                        _trendingMoviesState.value = TrendingState(error = it.message ?: "Error!")
+                    }
+
+                    is Resource.Loading -> {
+                        _trendingMoviesState.value = TrendingState(isLoading = true)
+                    }
                 }
-                is Resource.Error -> {
-                    _trendingMoviesState.value = TrendingState(error = it.message ?: "Error!")
-                }
-                is Resource.Loading -> {
-                    _trendingMoviesState.value = TrendingState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
 
     private fun getTrendingSeries() {
         jobTrendingSeries?.cancel()
-        jobTrendingSeries = getTopRatedSeriesForTrendingUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
-            when (it) {
-                is Resource.Success -> {
-                    val seriesData = it.data?.series ?: emptyList()
-                    _trendingSeriesState.value = TrendingState(trendingSeries = seriesData)
-                    Log.d("TrendingSeriesPartViewModel", "Trending series data received successfully. Data size: ${seriesData.size}")
-                    seriesData.forEachIndexed { index, series ->
-                        Log.d("TrendingSeriesPartViewModel", "Series $index: ${series.name}")
+        jobTrendingSeries =
+            getTopRatedSeriesForTrendingUseCase.executeGetTopRatedSeriesFromTMDB().onEach {
+                when (it) {
+                    is Resource.Success -> {
+                        _trendingSeriesState.value =
+                            TrendingState(trendingSeries = it.data?.series ?: emptyList())
+                    }
+
+                    is Resource.Error -> {
+                        _trendingSeriesState.value = TrendingState(error = it.message ?: "Error!")
+                    }
+
+                    is Resource.Loading -> {
+                        _trendingSeriesState.value = TrendingState(isLoading = true)
                     }
                 }
-                is Resource.Error -> {
-                    _trendingSeriesState.value = TrendingState(error = it.message ?: "Error!")
-                    Log.d("TrendingSeriesPartViewModel", "Trending series data received unsuccessful.")
-                }
-                is Resource.Loading -> {
-                    _trendingSeriesState.value = TrendingState(isLoading = true)
-                    Log.d("TrendingSeriesPartViewModel", "Trending series still Loading.")
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
+
 }

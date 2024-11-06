@@ -7,7 +7,9 @@ import org.json.JSONObject
  * Options used to configure the IFrame Player. All the options are listed here:
  * [IFrame player parameters](https://developers.google.com/youtube/player_parameters#Parameters)
  */
-class IFramePlayerOptions private constructor(private val playerOptions: JSONObject) {
+class IFramePlayerOptions private constructor(
+    private val playerOptions: JSONObject
+) {
 
     companion object {
         val default = Builder().controls(1).build()
@@ -22,6 +24,7 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
     }
 
     class Builder {
+
         companion object {
             private const val AUTO_PLAY = "autoplay"
             private const val MUTE = "mute"

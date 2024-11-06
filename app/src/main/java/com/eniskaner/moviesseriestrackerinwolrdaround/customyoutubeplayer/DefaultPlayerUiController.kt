@@ -32,7 +32,8 @@ class DefaultPlayerUiController(
     private val activity: Activity? = null
 ) : PlayerUiController {
 
-    val rootView: View = View.inflate(youTubePlayerView.context, R.layout.ayp_default_player_ui, null)
+    val rootView: View =
+        View.inflate(youTubePlayerView.context, R.layout.ayp_default_player_ui, null)
 
     private var youTubePlayerMenu: YouTubePlayerMenu = DefaultYouTubePlayerMenu(
         youTubePlayerView.context
@@ -45,7 +46,8 @@ class DefaultPlayerUiController(
     private val panel: View = rootView.findViewById(R.id.panel)
 
     private val controlsContainer: View = rootView.findViewById(R.id.controls_container)
-    private val extraViewsContainer: LinearLayout = rootView.findViewById(R.id.extra_views_container)
+    private val extraViewsContainer: LinearLayout =
+        rootView.findViewById(R.id.extra_views_container)
 
     private val videoTitle: TextView = rootView.findViewById(R.id.video_title)
     private val liveVideoIndicator: TextView = rootView.findViewById(R.id.live_video_indicator)
@@ -57,9 +59,11 @@ class DefaultPlayerUiController(
     private val fullscreenButton: ImageView = rootView.findViewById(R.id.fullscreen_button)
 
     private val customActionLeft: ImageView = rootView.findViewById(R.id.custom_action_left_button)
-    private val customActionRight: ImageView = rootView.findViewById(R.id.custom_action_right_button)
+    private val customActionRight: ImageView =
+        rootView.findViewById(R.id.custom_action_right_button)
 
-    private val youtubePlayerSeekBar: YouTubePlayerSeekBar = rootView.findViewById(R.id.youtube_player_seekbar)
+    private val youtubePlayerSeekBar: YouTubePlayerSeekBar =
+        rootView.findViewById(R.id.youtube_player_seekbar)
     private val fadeControlsContainer: FadeViewHelper = FadeViewHelper(controlsContainer)
 
     private var onFullscreenButtonListener: View.OnClickListener
@@ -73,11 +77,19 @@ class DefaultPlayerUiController(
     private var isMatchParent = false
 
     private val youTubePlayerStateListener = object : AbstractYouTubePlayerListener() {
-        override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+        override fun onStateChange(
+            youTubePlayer: YouTubePlayer,
+            state: PlayerConstants.PlayerState
+        ) {
             updateState(state)
 
             if (state === PlayerConstants.PlayerState.PLAYING || state === PlayerConstants.PlayerState.PAUSED || state === PlayerConstants.PlayerState.VIDEO_CUED) {
-                panel.setBackgroundColor(ContextCompat.getColor(panel.context, android.R.color.transparent))
+                panel.setBackgroundColor(
+                    ContextCompat.getColor(
+                        panel.context,
+                        android.R.color.transparent
+                    )
+                )
                 progressBar.visibility = View.GONE
 
                 if (isPlayPauseButtonEnabled) playPauseButton.visibility = View.VISIBLE
@@ -138,6 +150,7 @@ class DefaultPlayerUiController(
                     youTubePlayer.toggleFullscreen()
 
                 }
+
                 false -> {
                     youTubePlayerView.wrapContent()
                     activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
@@ -236,12 +249,14 @@ class DefaultPlayerUiController(
     }
 
     override fun showCurrentTime(show: Boolean): PlayerUiController {
-        youtubePlayerSeekBar.videoCurrentTimeTextView.visibility = if (show) View.VISIBLE else View.GONE
+        youtubePlayerSeekBar.videoCurrentTimeTextView.visibility =
+            if (show) View.VISIBLE else View.GONE
         return this
     }
 
     override fun showDuration(show: Boolean): PlayerUiController {
-        youtubePlayerSeekBar.videoDurationTextView.visibility = if (show) View.VISIBLE else View.GONE
+        youtubePlayerSeekBar.videoDurationTextView.visibility =
+            if (show) View.VISIBLE else View.GONE
         return this
     }
 

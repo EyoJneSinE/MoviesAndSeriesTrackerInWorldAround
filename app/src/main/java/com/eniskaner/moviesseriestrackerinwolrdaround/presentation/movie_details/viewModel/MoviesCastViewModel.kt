@@ -32,7 +32,7 @@ class MoviesCastViewModel @Inject constructor(
         }
     }
 
-    private fun getMovieCast(imdbId: Int) {
+    fun getMovieCast(imdbId: Int) {
         jobMovieCasts?.cancel()
         jobMovieCasts = getMovieDetailsCastUseCase.executeGetCastAndCrewFromTMDB(imdbId).onEach {
             when (it) {

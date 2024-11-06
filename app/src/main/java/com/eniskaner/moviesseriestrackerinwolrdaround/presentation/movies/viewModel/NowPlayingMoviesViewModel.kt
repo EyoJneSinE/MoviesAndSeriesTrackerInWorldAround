@@ -16,12 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class NowPlayingMoviesViewModel @Inject constructor(
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _stateNowPlayingMovies = MutableStateFlow<MoviesState>(MoviesState())
-    val stateNowPlayingMovies : StateFlow<MoviesState> = _stateNowPlayingMovies
+    val stateNowPlayingMovies: StateFlow<MoviesState> = _stateNowPlayingMovies
 
-    private var jobNowPlayingMovies : Job? = null
+    private var jobNowPlayingMovies: Job? = null
 
     init {
         getNowPlayingMovies()

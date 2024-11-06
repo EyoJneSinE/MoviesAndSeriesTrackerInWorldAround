@@ -1,4 +1,4 @@
-package com.eniskaner.eyojmovietrackerwithcompose.data.remote.seriesdb.top_rated_series
+package com.eniskaner.moviesseriestrackerinwolrdaround.data.remote.seriesdb.top_rated_series
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

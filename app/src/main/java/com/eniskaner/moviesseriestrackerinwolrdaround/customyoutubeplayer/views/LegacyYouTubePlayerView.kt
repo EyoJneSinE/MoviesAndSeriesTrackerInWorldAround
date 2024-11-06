@@ -50,7 +50,10 @@ internal class LegacyYouTubePlayerView(
 
         // stop playing if the user loads a video but then leaves the app before the video starts playing.
         webViewYouTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
-            override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+            override fun onStateChange(
+                youTubePlayer: YouTubePlayer,
+                state: PlayerConstants.PlayerState
+            ) {
                 if (state == PlayerConstants.PlayerState.PLAYING && !isEligibleForPlayback()) {
                     youTubePlayer.pause()
                 }
@@ -72,13 +75,12 @@ internal class LegacyYouTubePlayerView(
             override fun onNetworkAvailable() {
                 if (!isYouTubePlayerReady) {
                     initialize()
-                }
-                else {
+                } else {
                     playbackResumer.resume(webViewYouTubePlayer.youtubePlayer)
                 }
             }
 
-            override fun onNetworkUnavailable() { }
+            override fun onNetworkUnavailable() {}
         })
     }
 
@@ -103,7 +105,10 @@ internal class LegacyYouTubePlayerView(
         }
 
         initialize = {
-            webViewYouTubePlayer.initialize({ it.addListener(youTubePlayerListener) }, playerOptions)
+            webViewYouTubePlayer.initialize(
+                { it.addListener(youTubePlayerListener) },
+                playerOptions
+            )
         }
 
         if (!handleNetworkEvents) {
@@ -127,7 +132,8 @@ internal class LegacyYouTubePlayerView(
      *
      * @see LegacyYouTubePlayerView.initialize
      */
-    fun initialize(youTubePlayerListener: YouTubePlayerListener) = initialize(youTubePlayerListener, true)
+    fun initialize(youTubePlayerListener: YouTubePlayerListener) =
+        initialize(youTubePlayerListener, true)
 
     /**
      * @param youTubePlayerCallback A callback that will be called when the YouTubePlayer is ready.
@@ -137,8 +143,7 @@ internal class LegacyYouTubePlayerView(
     fun getYouTubePlayerWhenReady(youTubePlayerCallback: YouTubePlayerCallback) {
         if (isYouTubePlayerReady) {
             youTubePlayerCallback.onYouTubePlayer(webViewYouTubePlayer.youtubePlayer)
-        }
-        else {
+        } else {
             youTubePlayerCallbacks.add(youTubePlayerCallback)
         }
     }
